@@ -9,38 +9,34 @@ class Schedule:
         self.mem_sched = {}
 
     def add(self, uid, date):
+        timestamp = datetime.timestamp(date)
+
         try:
-            ids = self.mem_sched[date]
+            ids = self.mem_sched[timestamp]
         except KeyError:
-            # load in from disc
-            filename = self.directory + date + ".txt"
-
-            with open(filename) as f:
-                lines = f.readlines()
-
-            ids = self.mem_sched[date] = lines
+            ids = self._read_file(timestamp)
             if uid not in ids:
-                self.mem_sched[date].append(uid)
+                self.mem_sched[timestamp].append(uid)
+                self._append_to_date(uid, timestamp)
 
     def remove(self, uid, date):
+        timestamp = datetime.timestamp(date)
+
         try:
-            ids = self.mem_sched[date]
+            ids = self.mem_sched[timestamp]
         except KeyError:
-            # load in from disc
-            filename = self.directory + date + ".txt"
-
-            with open(filename) as f:
-                lines = f.readlines()
-
-            ids = self.mem_sched[date] = lines
+            ids = self._read_file(timestamp)
             if uid in ids:
-                self.mem_sched[date].remove(uid)
+                self.mem_sched[timestamp].remove(uid)
+                self._update_date(timestamp)
 
     def get(self, date) -> list:
+        timestamp = datetime.timestamp(date)
+
         try:
-            ids = self[date]
+            ids = self[timestamp]
         except KeyError:
-            ids = self[date] = []
+            ids = self._read_file(timestamp)
             return ids
 
     def get_week(self, date) -> list:
@@ -56,27 +52,24 @@ class Schedule:
         pass
 
     # stores everything on given date
-    def _update_date(self, date):
-        pass
-
-    # appends just 1 item
-    def _append_to_date(self, uid, date):
-        f = open("demofile2.txt", "a")
-        f.write("Now the file has more content!")
+    def _update_date(self, timestamp):
+        f = open(self.directory + timestamp + ".txt", "w")
+        f.writelines(self.mem_sched[timestamp])
         f.close()
 
-        # open and read the file after the appending:
-        f = open("demofile2.txt", "r")
-        print(f.read())
+    # appends just 1 item
+    def _append_to_date(self, uid, timestamp):
+        f = open(self.directory + timestamp + ".txt", "a")
+        f.write(uid + '\n')
+        f.close()
 
-    def _find_files(self, directory):
-        result = []
+    def _read_file(self, timestamp) -> list:
+        # load in from disc
+        filename = self.directory + timestamp + ".txt"
 
-        # Walking top-down from the root
-        for root, dire, files in os.walk(directory):
-            if self.directory in files:
-                result.append(os.path.join(root, self.directory))
+        # create file if doesn't exist (a+)
+        with open(filename, "a+") as f:
+            f.seek(0)
+            ids = f.readlines()
 
-        if not result:
-             # create new file
-        return result
+        return ids
