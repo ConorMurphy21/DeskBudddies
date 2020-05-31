@@ -1,6 +1,6 @@
 import unittest
 
-from cli import argumentsParser
+from cli import argsParser
 
 
 class MyTestCase(unittest.TestCase):
@@ -13,7 +13,7 @@ class MyTestCase(unittest.TestCase):
 
         for day in days:
             args.day = day
-            success = argumentsParser._parse_and_validate(args)
+            success = argsParser._parse_and_validate(args)
             self.assertTrue(success)
 
             actual_day = args.day
@@ -24,13 +24,13 @@ class MyTestCase(unittest.TestCase):
     def test_parse_and_validate_date(self):
         args = ArgsModel()
         args.date = '01/01'
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertTrue(success)
 
     def test_parse_and_validate_default_action(self):
         args = ArgsModel()
         args.day = 'Mon'
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertTrue(success)
 
     def test_double_action_fail(self):
@@ -38,62 +38,62 @@ class MyTestCase(unittest.TestCase):
         args.config = True
         args.serve = True
         args.day = 'Mon'
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertFalse(success)
         args = ArgsModel()
         args.query = True
         args.remove = True
         args.day = 'Mon'
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertFalse(success)
         args = ArgsModel()
         args.get = True
         args.remove = True
         args.day = 'Mon'
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertFalse(success)
 
     def test_double_date_fail(self):
         args = ArgsModel()
         args.day = 'Tues'
         args.date = '01/01'
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertFalse(success)
 
     def test_date_required_fail(self):
         args = ArgsModel()
         args.query = True
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertFalse(success)
         args = ArgsModel()
         args.remove = True
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertFalse(success)
         args = ArgsModel()
         args.get = True
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertFalse(success)
 
     def test_no_date_required(self):
         args = ArgsModel()
         args.config = True
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertTrue(success)
         args = ArgsModel()
         args.serve = True
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertTrue(success)
 
     def test_date_fail(self):
         args = ArgsModel()
         args.date = 'asdf'
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertFalse(success)
 
     def test_day_fail(self):
         args = ArgsModel()
         args.day = 'asdflkjasdf'
-        success = argumentsParser._parse_and_validate(args)
+        success = argsParser._parse_and_validate(args)
         self.assertFalse(success)
 
 
