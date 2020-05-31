@@ -3,10 +3,19 @@ import datetime
 
 
 def main():
-    test = Schedule("/Users/jengu/Desktop")
+    test = Schedule("/Users/jengu/Desktop/")
     x = datetime.datetime.now()
-    print(x)
-    test.get(x)
+    y = "mlem"
+    z = "mmmmm"
+
+    testlist = test.get(x)
+    print(testlist)
+
+    test.add(y, x)
+    test.add(z, x)
+
+    testlist = test.get(x)
+    print(testlist)
 
 
 if __name__ == "__main__":
