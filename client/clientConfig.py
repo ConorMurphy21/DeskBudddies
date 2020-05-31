@@ -11,8 +11,10 @@ class ClientConfig(SimpleConfig):
         super().__init__()
         self.serverIp = None
         self.uid = None
+        self.port = 6719
 
     def from_json(self, json_str: str):
         self.props = simpleConfig.to_dict(json_str)
         self.serverIp = self.props['serverIp']
         self.uid = self.props['uid']
+        self.port = self.props['port']

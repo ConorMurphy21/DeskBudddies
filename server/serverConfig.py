@@ -1,3 +1,4 @@
+from cmnUtils import simpleConfig
 from cmnUtils.simpleConfig import SimpleConfig
 
 
@@ -10,3 +11,11 @@ class ServerConfig(SimpleConfig):
         super().__init__()
         self.adjacencyFile = None
         self.scheduleFile = None
+        self.port = 6719
+
+
+def from_json(self, json_str: str):
+    self.props = simpleConfig.to_dict(json_str)
+    self.adjacencyFile = self.props['adjacencyFile']
+    self.scheduleFile = self.props['scheduleFile']
+    self.port = self.props['port']
