@@ -1,19 +1,52 @@
+import datetime
+import os
+
+
 class Schedule:
 
-    def __init__(self):
-        pass
+    def __init__(self, directory):
+        self.directory = directory
+        self.mem_sched = {}
 
     def add(self, uid, date):
-        pass
+        try:
+            ids = self.mem_sched[date]
+        except KeyError:
+            # load in from disc
+            filename = self.directory + date + ".txt"
+
+            with open(filename) as f:
+                lines = f.readlines()
+
+            ids = self.mem_sched[date] = lines
+            if uid not in ids:
+                self.mem_sched[date].append(uid)
 
     def remove(self, uid, date):
-        pass
+        try:
+            ids = self.mem_sched[date]
+        except KeyError:
+            # load in from disc
+            filename = self.directory + date + ".txt"
+
+            with open(filename) as f:
+                lines = f.readlines()
+
+            ids = self.mem_sched[date] = lines
+            if uid in ids:
+                self.mem_sched[date].remove(uid)
 
     def get(self, date) -> list:
-        pass
+        try:
+            ids = self[date]
+        except KeyError:
+            ids = self[date] = []
+            return ids
 
     def get_week(self, date) -> list:
-        pass
+        dt_object = datetime.fromtimestamp(date)
+        week_num = dt_object.strftime("%V")
+        return
 
     def _load(self):
         pass
@@ -28,4 +61,22 @@ class Schedule:
 
     # appends just 1 item
     def _append_to_date(self, uid, date):
-        pass
+        f = open("demofile2.txt", "a")
+        f.write("Now the file has more content!")
+        f.close()
+
+        # open and read the file after the appending:
+        f = open("demofile2.txt", "r")
+        print(f.read())
+
+    def _find_files(self, directory):
+        result = []
+
+        # Walking top-down from the root
+        for root, dire, files in os.walk(directory):
+            if self.directory in files:
+                result.append(os.path.join(root, self.directory))
+
+        if not result:
+             # create new file
+        return result
