@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class Action(Enum):
+class Action(IntEnum):
     SERVE = 0
     CONFIG = 1
     QUERY = 2
