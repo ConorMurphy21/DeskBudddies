@@ -68,6 +68,5 @@ class TestSchedule(unittest.TestCase):
         self.assertListEqual(actual, expected)
 
 
-
 if __name__ == '__main__':
     unittest.main()
