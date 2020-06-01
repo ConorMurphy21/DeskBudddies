@@ -1,22 +1,18 @@
 import json
+from collections import UserDict
 
 
-class SimpleConfig:
+class SimpleConfig(UserDict):
 
-    def __init__(self):
-        self.props = None
-
-    def set_props(self):
-        self.props = vars(self)
+    def __init__(self, json_file_path):
+        self.set_default_data()
+        with open(json_file_path) as json_file:
+            client_set = json.load(json_file)
+            for key, val in client_set:
+                self.data[key] = val
 
     def to_json(self) -> str:
-        self.set_props()
-        return json.dumps(self.props)
+        return json.dumps(self.data)
 
-    def from_json(self, json_str: str):
+    def set_default_data(self):
         pass
-
-
-def to_dict(json_str: str) -> dict:
-    return json.loads(json_str)
-

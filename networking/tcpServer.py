@@ -1,22 +1,21 @@
 import socketserver
+import struct
 import threading
 from multiprocessing import Process
 
 
 class TcpHandler(socketserver.BaseRequestHandler):
-    """
-    The request handler class for our server.
-
-    It is instantiated once per connection to the server, and must
-    override the handle() method to implement communication to the
-    client.
+    response = """
+        Hi, guy!
     """
 
     def handle(self):
         # self.request is the TCP socket connected to the client
         data = self.request.recv(1024).decode('utf-8')
         print(str(data))
-        self.request.sendall(data.upper().encode('utf-8'))
+        data = self.response.encode('utf-8')
+        msg = struct.pack('>I', len(data)) + data
+        self.request.sendall(msg)
 
 
 class TcpServer:
