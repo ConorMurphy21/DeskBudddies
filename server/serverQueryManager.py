@@ -4,28 +4,28 @@ from cli.action import Action
 from networking.packets.packet import Packet
 
 
-def add(args: dict) -> dict:
-    response = {}
+class ServerQueryManager:
 
-    return response
+    def __init__(self):
+        self.funcs = {Action.GET: self.get,
+                      Action.REMOVE: self.remove,
+                      Action.QUERY: self.add}
 
+    def add(self, args: dict) -> dict:
+        response = {}
 
-def remove(args: dict) -> dict:
-    response = {}
+        return response
 
-    return response
+    def remove(self, args: dict) -> dict:
+        response = {}
 
+        return response
 
-def get(args: dict) -> dict:
-    response = {}
+    def get(self, args: dict) -> dict:
+        response = {}
 
-    return response
+        return response
 
-
-FUNCS = {Action.QUERY: add,
-         Action.REMOVE: remove,
-         Action.GET: get}
-
-
-def respond(packet: Packet) -> Packet:
-    return Packet(packet.action, FUNCS[packet.action](packet.data))
+    def respond(self, packet: Packet) -> Packet:
+        args = packet.data
+        return Packet(packet.action, self.funcs[packet.action](args))

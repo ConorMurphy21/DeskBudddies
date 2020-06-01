@@ -4,20 +4,20 @@ import threading
 from multiprocessing import Process
 
 from networking.packets import packet
+from server.serverQueryManager import ServerQueryManager
 
 
 class TcpHandler(socketserver.BaseRequestHandler):
-    response = """
-        Hi, guy!
-    """
+
+    def __init__(self):
+        self.manager = ServerQueryManager()
 
     def handle(self):
         # self.request is the TCP socket connected to the client
         data = self.request.recv(1024).decode('utf-8')
         query = packet.from_server_str(data)
-
-        msg = struct.pack('>I', len(data)) + data
-        self.request.sendall(msg)
+        response = self.manager.respond(query)
+        self.request.sendall(response.encode())
 
 
 class TcpServer:
