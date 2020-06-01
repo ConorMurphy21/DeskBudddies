@@ -1,8 +1,3 @@
-# All original packets will have this format
-# [Continue or End Flag][Packet id][Packet args]
-# all continuation packets will have this structure
-# [Continue or End Flag][Packet args]
-
 
 class Packet:
 
