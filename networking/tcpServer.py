@@ -3,6 +3,8 @@ import struct
 import threading
 from multiprocessing import Process
 
+from networking.packets import packet
+
 
 class TcpHandler(socketserver.BaseRequestHandler):
     response = """
@@ -12,8 +14,8 @@ class TcpHandler(socketserver.BaseRequestHandler):
     def handle(self):
         # self.request is the TCP socket connected to the client
         data = self.request.recv(1024).decode('utf-8')
-        print(str(data))
-        data = self.response.encode('utf-8')
+        query = packet.from_server_str(data)
+
         msg = struct.pack('>I', len(data)) + data
         self.request.sendall(msg)
 

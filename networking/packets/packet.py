@@ -15,13 +15,15 @@ class Packet:
             Action.GET: ['date', 'week'],
             Action.REMOVE: ['uid', 'date']}
 
-    def __init__(self, packet_id: str, data: dict):
-        self.packet_id = packet_id
+    RESPS = ['success', 'uid', 'adj', 'dne', 'result']
+
+    def __init__(self, action: Action, data: dict):
+        self.action = action
         self.data = data
 
     def encode(self):
         # the packet id header
-        data = self.packet_id.encode('utf-8')
+        data = str(int(self.action)).encode('utf-8')
         data += json.dumps(self.data).encode('utf-8')
         # prepend the length to the front of the message
         msg = struct.pack('>I', len(data)) + data
@@ -35,14 +37,22 @@ def from_server_str(stream: str) -> Packet:
 
 
 def from_str(stream: str) -> Packet:
-    packet_id = stream[0]
+    action = Action(int(stream[0]))
     data = json.loads(stream[1:len(stream)])
-    return Packet(packet_id, data)
+    return Packet(action, data)
 
 
 def from_args(args) -> Packet:
-    packet_id = str(int(args.action))
     data = {}
     for key in Packet.REQS[args.action]:
-        data[key] = args[key]
-    return Packet(packet_id, data)
+        if key in args:
+            data[key] = args[key]
+    return Packet(args.action, data)
+
+
+def from_server_args(args: dict, action):
+    data = {}
+    for key in Packet.RESPS:
+        if key in args:
+            data[key] = args[key]
+    return Packet(action, data)
