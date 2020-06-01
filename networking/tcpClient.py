@@ -6,17 +6,17 @@ import socket
 import struct
 
 from networking.packets import packet
+from networking.packets.packet import Packet
 
 
-def send_packet(pack, ip, port) -> str:
+def send_packet(pack: Packet, host, port) -> Packet:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((ip, port))
-    print(pack)
-    s.send(pack.encode('utf-8'))
+    s.connect((host, port))
+    s.send(pack.encode())
     # receive and reconstruct a possibly large message
     data = recv_msg(s).decode('utf-8')
-    print(data)
-    return data
+    pack = packet.from_str(data)
+    return pack
 
 
 def recv_msg(sock):
