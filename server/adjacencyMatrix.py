@@ -1,28 +1,7 @@
-import csv
-
-
 class AdjacencyMatrix:
 
-    def __init__(self, directory):
-        self.directory = directory
-        self.matrix = {}
-        with open(directory, "r", encoding="utf-8-sig") as csvfile:
-            spamreader = csv.reader(csvfile, delimiter=',', skipinitialspace=True)
-            for row in spamreader:
-                adjacencies = {}
-                for name in row:
-                    if name != row[0] and name != '':
-                            adjacencies[name] = 1
+    def __init__(self):
+        pass
 
-                self.matrix[row[0]] = adjacencies
-
-    def is_adjacent(self, a, b) -> bool:
-        return self._is_adjacent(a, b) or self._is_adjacent(b, a)
-
-    def _is_adjacent(self, a, b) -> bool:
-        is_adj = 0
-        try:
-            is_adj = self.matrix[a][b]
-        except KeyError:
-            pass
-        return is_adj
+    def is_adjacent(self, a, b):
+        pass
