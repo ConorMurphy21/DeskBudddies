@@ -8,4 +8,5 @@ class ClientConfig(SimpleConfig):
         self.data = {
             'host': '',
             'uid': '',
+            'port': 6719
         }
