@@ -15,8 +15,6 @@ class Packet:
             Action.GET: ['date', 'week'],
             Action.REMOVE: ['uid', 'date']}
 
-    RESPS = ['success', 'uid', 'adj', 'dne', 'result']
-
     def __init__(self, action: Action, data: dict):
         self.action = action
         self.data = data
@@ -50,9 +48,3 @@ def from_args(args) -> Packet:
     return Packet(args.action, data)
 
 
-def from_server_args(args: dict, action):
-    data = {}
-    for key in Packet.RESPS:
-        if key in args:
-            data[key] = args[key]
-    return Packet(action, data)

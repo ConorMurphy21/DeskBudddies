@@ -2,6 +2,7 @@ import argparse
 from datetime import datetime
 
 from cli.action import Action
+from cmnUtils import dateUtils
 
 WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday',
             'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun',
@@ -38,6 +39,7 @@ def _parse_and_validate(args) -> bool:
     elif args.day:
         try:
             args.day = WEEKDAYS.index(args.day.lower()) % 7
+            args.date = dateUtils.get_next_weekday(args.day)
         except ValueError:
             print("Day not recognized.")
             return False
