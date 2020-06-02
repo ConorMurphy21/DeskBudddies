@@ -75,7 +75,8 @@ def _parse_and_validate(args) -> bool:
         return False
 
     # do any aditional parsing
-    args.date = args.date.strftime("%Y%m%d")
+    if not no_date:
+        args.date = args.date.strftime("%Y%m%d")
 
     # there is no validation to make sure that week isn't set when other args are
     # it just won't do anything :shrug:

@@ -1,4 +1,3 @@
-from cmnUtils import simpleConfig
 from cmnUtils.simpleConfig import SimpleConfig
 
 

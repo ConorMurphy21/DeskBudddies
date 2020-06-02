@@ -1,6 +1,6 @@
 from cli.action import Action
 from client.clientConfig import ClientConfig
-from cmnUtils import directoryFinder
+from cmnUtils import directoryFinder, configManager
 from networking import tcpClient
 from networking.packets import packet as pct
 from networking.packets.packet import Packet
@@ -18,7 +18,8 @@ def main(args):
 
 
 def _required_config(settings):
-    print("It looks like this is your first time using it.")
+    print("It looks like this is your first time using it. For now we will just configure some essentials, but you can"
+          " use the config flag to customize further.")
     host = input("Please enter the hostname or ip of your DeskBuddies server: ")
     uid = input("Please enter your user id: ")
     settings['host'] = host
@@ -27,7 +28,8 @@ def _required_config(settings):
 
 
 def _config(settings):
-    pass
+    configManager.user_config_interface(settings)
+    settings.write()
 
 
 def _ask_server(args, settings):
