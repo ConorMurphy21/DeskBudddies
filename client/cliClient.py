@@ -32,7 +32,7 @@ def _config(settings):
 
 def _ask_server(args, settings):
     # just in case any required info for the packet creation is configured (like uid)
-    args = {**args, **vars(settings)}
+    args = {**args, **settings.data}
     packet = pct.from_args(args)
     response = tcpClient.send_packet(packet, settings['host'], settings['port'])
     print(_parse_response(response))
