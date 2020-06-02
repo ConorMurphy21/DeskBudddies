@@ -10,9 +10,9 @@ class AdjacencyMatrix:
             spamreader = csv.reader(csvfile, delimiter=',', skipinitialspace=True)
             for row in spamreader:
                 adjacencies = {}
-                for name in row:
-                    if name != row[0] and name != '':
-                            adjacencies[name] = 1
+                for uid in row:
+                    if uid != row[0] and uid != '':
+                            adjacencies[uid] = 1
 
                 self.matrix[row[0]] = adjacencies
 
@@ -21,8 +21,5 @@ class AdjacencyMatrix:
 
     def _is_adjacent(self, a, b) -> bool:
         is_adj = 0
-        try:
-            is_adj = self.matrix[a][b]
-        except KeyError:
-            pass
+        is_adj = self.matrix[a][b]
         return is_adj
