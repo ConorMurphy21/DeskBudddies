@@ -74,6 +74,9 @@ def _parse_and_validate(args) -> bool:
         print(args.action.name.lower() + " requires a day or date to be set.")
         return False
 
+    # do any aditional parsing
+    args.date = args.date.strftime("%Y%m%d")
+
     # there is no validation to make sure that week isn't set when other args are
     # it just won't do anything :shrug:
     return True

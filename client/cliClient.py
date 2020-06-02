@@ -12,9 +12,9 @@ def main(args):
         _config(settings)
         return
 
-    if settings['host'] == '' or settings['ip'] == '':
+    if settings['host'] == '' or settings['uid'] == '':
         _required_config(settings)
-    _ask_server(args, settings)
+    _ask_server(vars(args), settings)
 
 
 def _required_config(settings):
@@ -23,6 +23,7 @@ def _required_config(settings):
     uid = input("Please enter your user id: ")
     settings['host'] = host
     settings['uid'] = uid
+    settings.write()
 
 
 def _config(settings):
@@ -31,7 +32,7 @@ def _config(settings):
 
 def _ask_server(args, settings):
     # just in case any required info for the packet creation is configured (like uid)
-    args += settings
+    args = {**args, **vars(settings)}
     packet = pct.from_args(args)
     response = tcpClient.send_packet(packet, settings['host'], settings['port'])
     print(_parse_response(response))

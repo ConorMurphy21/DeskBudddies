@@ -42,9 +42,9 @@ def from_str(stream: str) -> Packet:
 
 def from_args(args) -> Packet:
     data = {}
-    for key in Packet.REQS[args.action]:
+    for key in Packet.REQS[args['action']]:
         if key in args:
             data[key] = args[key]
-    return Packet(args.action, data)
+    return Packet(args['action'], data)
 
 
