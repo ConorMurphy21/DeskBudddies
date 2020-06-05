@@ -23,7 +23,7 @@ class TcpHandler(socketserver.BaseRequestHandler):
 class TcpServer:
 
     def __init__(self, port):
-        self.server = socketserver.TCPServer(('', port), TcpHandler)
+        self.server = socketserver.ThreadingTCPServer(('', port), TcpHandler)
 
     def run(self):
         threading.Thread(target=self.server.serve_forever).start()
