@@ -37,6 +37,7 @@ def _ask_server(args, settings):
     args = {**args, **settings.data}
     packet = pct.from_args(args)
     response = tcpClient.send_packet(packet, settings['host'], settings['port'])
+    print(response.encode().decode('utf-8'))
     print(_parse_response(response))
 
 

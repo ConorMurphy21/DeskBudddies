@@ -1,9 +1,6 @@
 from datetime import datetime
 import os
 
-import timestamp as timestamp
-
-
 class Schedule:
 
     def __init__(self, directory):
