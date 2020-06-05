@@ -1,7 +1,9 @@
 
 # These are all of the methods callable by the client, that interact with the server
 from cli.action import Action
+from cmnUtils import directoryFinder
 from networking.packets.packet import Packet
+from server.schedule import Schedule
 
 
 class ServerQueryManager:
@@ -11,8 +13,11 @@ class ServerQueryManager:
                       Action.REMOVE: self.remove,
                       Action.QUERY: self.add}
 
+        self.schedule = Schedule(directoryFinder.server_schedule_dir())
+        self.adjmat = Schedule(directoryFinder.server_adjacency_file())
+
     def add(self, args: dict) -> dict:
-        response = {}
+        response = {'success': True}
 
         return response
 

@@ -9,7 +9,7 @@ from server.serverQueryManager import ServerQueryManager
 
 class TcpHandler(socketserver.BaseRequestHandler):
 
-    def __init__(self):
+    def setup(self):
         self.manager = ServerQueryManager()
 
     def handle(self):
@@ -23,7 +23,7 @@ class TcpHandler(socketserver.BaseRequestHandler):
 class TcpServer:
 
     def __init__(self, port):
-        self.server = socketserver.TCPServer(('', port), TcpHandler)
+        self.server = socketserver.ThreadingTCPServer(('', port), TcpHandler)
 
     def run(self):
         threading.Thread(target=self.server.serve_forever).start()
