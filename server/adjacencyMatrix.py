@@ -16,6 +16,16 @@ class AdjacencyMatrix:
 
                 self.matrix[row[0]] = adjacencies
 
+    def write_to_csv(self, directory):
+        with open(directory, "w", encoding="utf-8-sig") as csvfile:
+            spamwriter = csv.writer(csvfile, delimiter=',', skipinitialspace=True)
+            for uid in self.matrix.keys():
+                row = [uid]
+                for adj in self.matrix[uid]:
+                    row.append(adj)
+
+                spamwriter.writerow(row)
+
     def is_adjacent(self, a, b) -> bool:
         return self._is_adjacent(a, b) or self._is_adjacent(b, a)
 
