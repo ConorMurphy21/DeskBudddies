@@ -1,6 +1,7 @@
 import threading
 from datetime import datetime
 import os
+from pathlib import Path
 
 
 class Schedule:
@@ -45,23 +46,24 @@ class Schedule:
 
     # stores everything on given date
     def _update_date(self, timestamp_obj):
-        f = open(self.directory + str(timestamp_obj) + ".txt", "w+")
+        f = open(str(self._get_file(timestamp_obj)), "w+")
         f.writelines(self.mem_sched[timestamp_obj])
         f.close()
 
     # appends just 1 item
     def _append_to_date(self, uid, timestamp_obj):
-        f = open(str(self.directory) + str(timestamp_obj) + ".txt", "a+")
+        f = open(str(self._get_file(timestamp_obj)), "a+")
         f.write(uid + '\n')
         f.close()
 
     # read from file, return empty list if file doesn't exist
     def _read_file(self, timestamp_obj) -> list:
         # load in from disc
-        filename = str(self.directory) + str(timestamp_obj) + ".txt"
+        filename = self._get_file(timestamp_obj)
         # create file if doesn't exist (a+)
         try:
-            with open(filename, "r+") as f:
+            with open(str(filename), "r+") as f:
+                print(filename)
                 ids = f.readlines()
             return ids
         except FileNotFoundError:
@@ -74,5 +76,6 @@ class Schedule:
             ids = self.mem_sched[timestamp_obj] = self._read_file(timestamp_obj)
         return ids
 
-    def is_adjacacent(self):
-        pass
+    def _get_file(self, timestamp_obj) -> Path:
+        return self.directory / Path(str(timestamp_obj) + ".txt")
+

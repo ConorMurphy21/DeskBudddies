@@ -18,6 +18,9 @@ class ServerQueryManager:
         self.adjmat = Schedule(directoryFinder.server_adjacency_file())
 
     def add(self, args: dict) -> dict:
+        print(directoryFinder.server_adjacency_file())
+        print(directoryFinder.server_schedule_dir())
+
         datetime_obj = string_to_datetime(args['date'])
         results = []
         uids_on_day = self.schedule.get(datetime_obj)
