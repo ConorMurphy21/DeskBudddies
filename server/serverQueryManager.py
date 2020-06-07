@@ -27,14 +27,17 @@ class ServerQueryManager:
         response_code = 3
 
         for uid in uids_on_day:
-            if self.adjmat.is_adjacent(args['uid'], uid):
+            if self.adjmat.is_adjacent(args['uid'], uid) == True:
                 results.append(uid)
+
+        print(self.adjmat.is_adjacent(args['uid'], uid))
 
         if len(results) > 0:
             # uid can't work on the same day as someone already working on that day
             response_code = 409
         else:
             added = self.schedule.add(args['uid'], datetime_obj)
+            print(added)
             if not added:
                 # uid not added successfully
                 response_code = 417
@@ -43,7 +46,6 @@ class ServerQueryManager:
                 response_code = 200
 
         response = {'responseCode': response_code, 'results': results}
-
         return response
 
     def remove(self, args: dict) -> dict:
