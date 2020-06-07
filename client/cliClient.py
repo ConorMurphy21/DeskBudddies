@@ -1,5 +1,6 @@
 from cmnSys.action import Action
 from client.clientConfig import ClientConfig
+from cmnSys.responseCode import ResponseCode
 from cmnUtils import configManager
 from cmnSys import directoryFinder
 from networking import tcpClient
@@ -42,5 +43,23 @@ def _ask_server(args, settings):
     print(_parse_response(response))
 
 
-def _parse_response(response: Packet) -> str:
+def _add_response(response: Packet) -> str:
+    data = response.data
+    code = ResponseCode(data['responseCode'])
+    if code == ResponseCode.OK:
+        return "Successfully added you to the schedule!"
+
+
+def _remove_response(response: Packet) -> str:
     pass
+
+
+def _get_response(response: Packet) -> str:
+    pass
+
+
+def _parse_response(response: Packet) -> str:
+    funcs = {Action.GET: _get_response,
+             Action.QUERY: _add_response,
+             Action.REMOVE: _remove_response}
+    return funcs[response.action](response)
