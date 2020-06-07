@@ -63,22 +63,25 @@ class Schedule:
     # appends just 1 item
     def _append_to_date(self, uid, timestamp_obj):
         f = open(str(self._get_file(timestamp_obj)), "a+")
-        f.write(uid + ',')
+        f.write(uid + '\n')
         f.close()
 
     # read from file, return empty list if file doesn't exist
     def _read_file(self, timestamp_obj) -> list:
         # load in from disc
         filename = self._get_file(timestamp_obj)
+        ids = []
         # create file if doesn't exist (a+)
         try:
             with open(str(filename), "r+") as f:
-                line = f.readlines()
-                ids = line.split(',')
-            return ids
+                for uid in f:
+                    uid = uid.rstrip('\n')
+                    ids.append(uid)
         except FileNotFoundError:
-            return []
-
+            pass
+        
+        return ids
+    
     def _get_ids(self, timestamp_obj) -> list:
         try:
             ids = self.mem_sched[timestamp_obj]
