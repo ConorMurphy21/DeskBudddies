@@ -3,11 +3,17 @@ import csv
 
 class AdjacencyMatrix:
 
-    def __init__(self, directory):
+    def __init__(self, directory, suppress):
         self.directory = directory
         self.matrix = {}
         self.open = False
-        self.open_file()
+        if suppress:
+            try:
+                self.open_file()
+            except FileNotFoundError:
+                pass
+        else:
+            self.open_file()
         self.open = True
 
     def write_to_csv(self, directory):

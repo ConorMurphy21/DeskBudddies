@@ -15,10 +15,7 @@ class ServerQueryManager:
                       Action.QUERY: self.add}
 
         self.schedule = Schedule(directoryFinder.server_schedule_dir())
-        try:
-            self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file())
-        except FileNotFoundError:
-            pass
+        self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file(), True)
 
     def add(self, args: dict) -> dict:
         datetime_obj = string_to_datetime(args['date'])
@@ -27,17 +24,16 @@ class ServerQueryManager:
         response_code = 3
 
         for uid in uids_on_day:
-            if self.adjmat.is_adjacent(args['uid'], uid) == True:
+            if self.adjmat.is_adjacent(args['uid'], uid):
                 results.append(uid)
 
-        print(self.adjmat.is_adjacent(args['uid'], uid))
+            print(self.adjmat.is_adjacent(args['uid'], uid))
 
         if len(results) > 0:
             # uid can't work on the same day as someone already working on that day
             response_code = 409
         else:
             added = self.schedule.add(args['uid'], datetime_obj)
-            print(added)
             if not added:
                 # uid not added successfully
                 response_code = 417

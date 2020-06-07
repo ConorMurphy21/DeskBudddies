@@ -28,7 +28,7 @@ def get_adjmat() -> AdjacencyMatrix:
     csv = input("Please provide a path to your adjacency file here: ")
     while True:
         try:
-            adj = AdjacencyMatrix(csv)
+            adj = AdjacencyMatrix(csv, False)
             print(adj)
             break
         except FileNotFoundError:
