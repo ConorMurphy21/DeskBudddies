@@ -24,7 +24,7 @@ class ServerQueryManager:
         response_code = 3
 
         for uid in uids_on_day:
-            if self.adjmat.is_adjacent(args['uid'], uid):
+            if self.adjmat.is_adjacent(args['uid'], uid) == True:
                 results.append(uid)
 
             print(self.adjmat.is_adjacent(args['uid'], uid))
