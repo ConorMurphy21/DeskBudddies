@@ -9,8 +9,7 @@ from server.serverQueryManager import ServerQueryManager
 
 class TcpHandler(socketserver.BaseRequestHandler):
 
-    def setup(self):
-        self.manager = ServerQueryManager()
+    manager = ServerQueryManager()
 
     def handle(self):
         # self.request is the TCP socket connected to the client

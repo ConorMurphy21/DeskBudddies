@@ -6,20 +6,9 @@ class AdjacencyMatrix:
     def __init__(self, directory):
         self.directory = directory
         self.matrix = {}
-        row1 = []
-        with open(directory, "r", encoding="utf-8-sig") as csvfile:
-            reader = csv.reader(csvfile, delimiter=',', skipinitialspace=True)
-            row1 = next(reader)
-            row1.remove('')
-            print(row1)
-            for row in reader:
-                i = 1
-                self.matrix[row[0]] = {}
-                for uids in row1:
-                    self.matrix[row[0]][uids] = row[i]
-                    i += 1
-        if not self._is_valid(row1):
-            raise ValueError
+        self.open = False
+        self.open_file()
+        self.open = True
 
     def write_to_csv(self, directory):
         with open(directory, "w+", encoding="utf-8-sig", newline='') as csvfile:
@@ -35,7 +24,25 @@ class AdjacencyMatrix:
 
                 writer.writerow(row)
 
+    def open_file(self):
+        with open(self.directory, "r", encoding="utf-8-sig") as csvfile:
+            reader = csv.reader(csvfile, delimiter=',', skipinitialspace=True)
+            row1 = next(reader)
+            row1.remove('')
+            print(row1)
+            for row in reader:
+                i = 1
+                self.matrix[row[0]] = {}
+                for uids in row1:
+                    self.matrix[row[0]][uids] = row[i]
+                    i += 1
+        if not self._is_valid(row1):
+            raise ValueError
+
     def is_adjacent(self, a, b) -> bool:
+        if not self.open:
+            self.open_file()
+            self.open = True
         return self.matrix[a][b] or self.matrix[b][a]
 
     def _is_valid(self, row1) -> bool:
