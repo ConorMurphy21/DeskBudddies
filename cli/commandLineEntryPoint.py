@@ -1,5 +1,5 @@
 from cli import argsParser
-from cli.action import Action
+from cmnSys.action import Action
 from client import cliClient
 from server import cliServer
 

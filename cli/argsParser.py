@@ -1,7 +1,7 @@
 import argparse
 from datetime import datetime
 
-from cli.action import Action
+from cmnSys.action import Action
 from cmnUtils import dateUtils
 
 WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday',

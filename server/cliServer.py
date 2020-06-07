@@ -1,6 +1,4 @@
-import os
-
-from cmnUtils import directoryFinder
+from cmnSys import directoryFinder
 from cmnUtils.configManager import user_config_interface
 from networking.tcpServer import TcpServer
 from server.adjacencyMatrix import AdjacencyMatrix

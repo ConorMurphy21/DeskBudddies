@@ -1,6 +1,6 @@
 # These are all of the methods callable by the client, that interact with the server
-from cli.action import Action
-from cmnUtils import directoryFinder
+from cmnSys.action import Action
+from cmnSys import directoryFinder
 from cmnUtils.dateUtils import string_to_datetime
 from networking.packets.packet import Packet
 from server.adjacencyMatrix import AdjacencyMatrix
@@ -24,7 +24,7 @@ class ServerQueryManager:
         response_code = 3
 
         for uid in uids_on_day:
-            if self.adjmat.is_adjacent(args['uid'], uid):
+            if self.adjmat.is_adjacent(args['uid'], uid) == True:
                 results.append(uid)
 
             print(self.adjmat.is_adjacent(args['uid'], uid))

@@ -1,5 +1,4 @@
-from cmnUtils import simpleConfig
-from cmnUtils.simpleConfig import SimpleConfig
+from cmnSys.simpleConfig import SimpleConfig
 
 
 class ServerConfig(SimpleConfig):

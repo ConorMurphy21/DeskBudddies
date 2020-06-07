@@ -1,6 +1,7 @@
-from cli.action import Action
+from cmnSys.action import Action
 from client.clientConfig import ClientConfig
-from cmnUtils import directoryFinder, configManager
+from cmnUtils import configManager
+from cmnSys import directoryFinder
 from networking import tcpClient
 from networking.packets import packet as pct
 from networking.packets.packet import Packet
