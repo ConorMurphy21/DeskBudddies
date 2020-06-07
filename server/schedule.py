@@ -14,7 +14,7 @@ class Schedule:
         safeOpen.mkdir_p(str(directory))
         self.mem_sched = {}
 
-    def add(self, uid, date):
+    def add(self, uid, date) -> bool:
         timestamp_obj = datetime.timestamp(date)
         self.lock.acquire()
         ids = self._get_ids(timestamp_obj)
@@ -22,9 +22,13 @@ class Schedule:
         if uid not in ids:
             self.mem_sched[timestamp_obj].append(uid)
             self._append_to_date(uid, timestamp_obj)
+            return True
+        else:
+            return False
+            
         self.lock.release()
 
-    def remove(self, uid, date):
+    def remove(self, uid, date) -> bool:
         timestamp_obj = datetime.timestamp(date)
         self.lock.acquire()
         ids = self._get_ids(timestamp_obj)
@@ -32,6 +36,9 @@ class Schedule:
         if uid in ids:
             self.mem_sched[timestamp_obj].remove(uid)
             self._update_date(timestamp_obj)
+            return True
+        else:
+            return False
         self.lock.release()
 
     def get(self, date) -> list:
@@ -56,7 +63,7 @@ class Schedule:
     # appends just 1 item
     def _append_to_date(self, uid, timestamp_obj):
         f = open(str(self._get_file(timestamp_obj)), "a+")
-        f.write(uid)
+        f.write(uid + ',')
         f.close()
 
     # read from file, return empty list if file doesn't exist
@@ -66,7 +73,8 @@ class Schedule:
         # create file if doesn't exist (a+)
         try:
             with open(str(filename), "r+") as f:
-                ids = f.readlines()
+                line = f.readlines()
+                ids = line.split(',')
             return ids
         except FileNotFoundError:
             return []

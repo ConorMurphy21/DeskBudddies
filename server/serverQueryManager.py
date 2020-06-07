@@ -30,15 +30,17 @@ class ServerQueryManager:
             if self.adjmat.is_adjacent(args['uid'], uid):
                 results.append(uid)
 
-        # problem
         if len(results) > 0:
-            pass
+            # uid can't work on the same day as someone already working on that day
+            response_code = 409
         else:
-            # uid added to day successfully
-            response_code = 200
-            self.schedule.add(args['uid'], datetime_obj)
-            # This is not necessary, the user knows who he is
-            results.append(args['uid'])
+            added = self.schedule.add(args['uid'], datetime_obj)
+            if not added:
+                # uid not added successfully
+                response_code = 417
+            else:
+                # uid added to day successfully
+                response_code = 200
 
         response = {'responseCode': response_code, 'results': results}
 
