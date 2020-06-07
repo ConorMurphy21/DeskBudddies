@@ -22,11 +22,12 @@ class Schedule:
         if uid not in ids:
             self.mem_sched[timestamp_obj].append(uid)
             self._append_to_date(uid, timestamp_obj)
+            self.lock.release()
             return True
         else:
+            self.lock.release()
             return False
             
-        self.lock.release()
 
     def remove(self, uid, date) -> bool:
         timestamp_obj = datetime.timestamp(date)
@@ -36,10 +37,11 @@ class Schedule:
         if uid in ids:
             self.mem_sched[timestamp_obj].remove(uid)
             self._update_date(timestamp_obj)
+            self.lock.release()
             return True
         else:
+            self.lock.release()
             return False
-        self.lock.release()
 
     def get(self, date) -> list:
         self.lock.acquire()
