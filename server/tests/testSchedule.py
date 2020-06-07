@@ -1,5 +1,6 @@
 import os
 import unittest
+import shutil
 from datetime import datetime
 
 from server.schedule import Schedule
@@ -19,7 +20,7 @@ class TestSchedule(unittest.TestCase):
         self.schedule = Schedule(self.dir)
 
     def tearDown(self) -> None:
-        os.remove(self.dir)
+        shutil.rmtree(self.dir)
 
     def test_add_success(self):
 
@@ -29,11 +30,11 @@ class TestSchedule(unittest.TestCase):
                  self.date2: ['Jen'],
                  self.date3: ['Aliyah']}
 
-        for (date, uids) in pairs:
+        for (date, uids) in pairs.items():
             for uid in uids:
                 schedule.add(uid, date)
 
-        for (date, uids) in pairs:
+        for (date, uids) in pairs.items():
             actual = schedule.get(date)
             expected = uids
             self.assertListEqual(actual, expected)
@@ -45,20 +46,20 @@ class TestSchedule(unittest.TestCase):
                  self.date2: ['Jen'],
                  self.date3: ['Aliyah']}
 
-        for (date, uids) in pairs:
+        for (date, uids) in pairs.items():
             for uid in uids:
                 schedule.add(uid, date)
 
         # remove the memory record of the schedule
         schedule.mem_sched = {}
 
-        for (date, uids) in pairs:
+        for (date, uids) in pairs.items():
             actual = schedule.get(date)
             expected = uids
             self.assertListEqual(actual, expected)
 
     def test_double_add(self):
-        schedule = Schedule()
+        schedule = self.schedule
         success = schedule.add('Jen', self.date1)
         self.assertTrue(success)
         success = schedule.add('Jen', self.date1)
@@ -66,6 +67,27 @@ class TestSchedule(unittest.TestCase):
         actual = schedule.get(self.date1)
         expected = ['Jen']
         self.assertListEqual(actual, expected)
+
+
+    def test_simple_remove(self):
+        schedule = self.schedule
+        schedule.add('Jen', self.date1)
+        schedule.add('Conor', self.date1)
+        schedule.remove('Jen', self.date1)
+        expected = ['Conor']
+        actual = schedule.get(self.date1)
+        self.assertListEqual(expected, actual)
+
+
+    def test_simple_remove_uncached(self):
+        schedule = self.schedule
+        schedule.add('Jen', self.date1)
+        schedule.add('Conor', self.date1)
+        schedule.mem_sched = {}
+        schedule.remove('Jen', self.date1)
+        expected = ['Conor']
+        actual = schedule.get(self.date1)
+        self.assertListEqual(expected, actual)
 
 
 if __name__ == '__main__':

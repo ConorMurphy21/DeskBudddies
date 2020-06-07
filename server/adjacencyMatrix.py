@@ -3,11 +3,35 @@ import csv
 
 class AdjacencyMatrix:
 
-    def __init__(self, directory):
+    def __init__(self, directory, suppress):
         self.directory = directory
         self.matrix = {}
-        row1 = []
-        with open(directory, "r", encoding="utf-8-sig") as csvfile:
+        self.open = False
+        if suppress:
+            try:
+                self.open_file()
+            except FileNotFoundError:
+                pass
+        else:
+            self.open_file()
+        self.open = True
+
+    def write_to_csv(self, directory):
+        with open(directory, "w+", encoding="utf-8-sig", newline='') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',', skipinitialspace=True)
+            row1 = list(self.matrix.keys())
+            row1.insert(0, '')
+            writer.writerow(row1)
+
+            for uid1 in self.matrix.keys():
+                row = [uid1]
+                for uid2 in self.matrix.keys():
+                    row.append(self.matrix[uid1][uid2])
+
+                writer.writerow(row)
+
+    def open_file(self):
+        with open(self.directory, "r", encoding="utf-8-sig") as csvfile:
             reader = csv.reader(csvfile, delimiter=',', skipinitialspace=True)
             row1 = next(reader)
             row1.remove('')
@@ -21,21 +45,12 @@ class AdjacencyMatrix:
         if not self._is_valid(row1):
             raise ValueError
 
-    def write_to_csv(self, directory):
-        with open(directory, "w", encoding="utf-8-sig", newline='') as csvfile:
-            writer = csv.writer(csvfile, delimiter=',', skipinitialspace=True)
-            row1 = list(self.matrix.keys())
-            row1.insert(0, '')
-            writer.writerow(row1)
-
-            for uid1 in self.matrix.keys():
-                row = [uid1]
-                for uid2 in self.matrix.keys():
-                    row.append(self.matrix[uid1][uid2])
-
-                writer.writerow(row)
-
     def is_adjacent(self, a, b) -> bool:
+        if a == b:
+            return False
+        if not self.open:
+            self.open_file()
+            self.open = True
         return self.matrix[a][b] or self.matrix[b][a]
 
     def _is_valid(self, row1) -> bool:

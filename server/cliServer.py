@@ -11,13 +11,14 @@ def main(args):
     # get settings
     settings = ServerConfig(directoryFinder.server_config_file())
     # get adjacency file up to date
-    if not os.path.isfile(directoryFinder.server_adjacency_file()):
+    if not directoryFinder.server_adjacency_file().is_file():
         get_adjmat().write_to_csv(directoryFinder.server_adjacency_file())
     else:
         if input("Would you like to update or change your adjacency file (y/n):") == 'y':
             get_adjmat().write_to_csv(directoryFinder.server_adjacency_file())
 
     user_config_interface(settings)
+
 
     # runs server in another thread
     TcpServer(settings['port']).run()
@@ -27,7 +28,7 @@ def get_adjmat() -> AdjacencyMatrix:
     csv = input("Please provide a path to your adjacency file here: ")
     while True:
         try:
-            adj = AdjacencyMatrix(csv)
+            adj = AdjacencyMatrix(csv, False)
             print(adj)
             break
         except FileNotFoundError:
