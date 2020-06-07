@@ -22,7 +22,7 @@ class AdjacencyMatrix:
             raise ValueError
 
     def write_to_csv(self, directory):
-        with open(directory, "w", encoding="utf-8-sig", newline='') as csvfile:
+        with open(directory, "w+", encoding="utf-8-sig", newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',', skipinitialspace=True)
             row1 = list(self.matrix.keys())
             row1.insert(0, '')

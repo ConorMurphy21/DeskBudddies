@@ -4,6 +4,7 @@ from cli.action import Action
 from cmnUtils import directoryFinder
 from cmnUtils.dateUtils import string_to_datetime
 from networking.packets.packet import Packet
+from server.adjacencyMatrix import AdjacencyMatrix
 from server.schedule import Schedule
 
 
@@ -15,7 +16,7 @@ class ServerQueryManager:
                       Action.QUERY: self.add}
 
         self.schedule = Schedule(directoryFinder.server_schedule_dir())
-        self.adjmat = Schedule(directoryFinder.server_adjacency_file())
+        self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file())
 
     def add(self, args: dict) -> dict:
         print(directoryFinder.server_adjacency_file())
@@ -36,6 +37,7 @@ class ServerQueryManager:
         if not adjacency:
             # uid added to day successfully
             response_code = 200
+            self.schedule.add(args['uid'], datetime_obj)
         else:
             # conflict (can't work on same day as someone scheduled for that day)
             response_code = 409
