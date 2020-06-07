@@ -11,7 +11,6 @@ class AdjacencyMatrix:
             reader = csv.reader(csvfile, delimiter=',', skipinitialspace=True)
             row1 = next(reader)
             row1.remove('')
-            print(row1)
             for row in reader:
                 i = 1
                 self.matrix[row[0]] = {}

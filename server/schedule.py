@@ -56,7 +56,7 @@ class Schedule:
     # appends just 1 item
     def _append_to_date(self, uid, timestamp_obj):
         f = open(str(self._get_file(timestamp_obj)), "a+")
-        f.write(uid + '\n')
+        f.write(uid)
         f.close()
 
     # read from file, return empty list if file doesn't exist

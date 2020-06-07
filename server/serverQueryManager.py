@@ -1,4 +1,3 @@
-
 # These are all of the methods callable by the client, that interact with the server
 from cli.action import Action
 from cmnUtils import directoryFinder
@@ -19,26 +18,31 @@ class ServerQueryManager:
         self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file())
 
     def add(self, args: dict) -> dict:
-        print(directoryFinder.server_adjacency_file())
-        print(directoryFinder.server_schedule_dir())
-
         datetime_obj = string_to_datetime(args['date'])
         results = []
         uids_on_day = self.schedule.get(datetime_obj)
-        adjacency = False
-        for uid in uids_on_day:
-            adjacency = self.adjmat.is_adjacent(args['uid'], uid)
-            results.append(uid)
+        adjacency = 3
+        response_code = 3
 
+        for uid in uids_on_day:
+            has_adjacency = self.adjmat.is_adjacent(args['uid'], uid)
+            results.append(uid)
             if uid == args['uid']:
-                adjacency = True
+                has_adjacency = False
                 results = "Already requested to work on that day"
 
-        if not adjacency:
+        print(has_adjacency + "this is the intial thing")
+
+        if has_adjacency == False:
+            print(has_adjacency + "this is the good thing")
+
             # uid added to day successfully
             response_code = 200
             self.schedule.add(args['uid'], datetime_obj)
-        else:
+            results.append(args['uid'])
+        elif has_adjacency == True:
+            print(has_adjacency + "this is the bad thing")
+
             # conflict (can't work on same day as someone scheduled for that day)
             response_code = 409
 
