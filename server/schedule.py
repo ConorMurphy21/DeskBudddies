@@ -66,7 +66,6 @@ class Schedule:
         # create file if doesn't exist (a+)
         try:
             with open(str(filename), "r+") as f:
-                print(filename)
                 ids = f.readlines()
             return ids
         except FileNotFoundError:

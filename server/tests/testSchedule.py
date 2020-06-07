@@ -1,5 +1,6 @@
 import os
 import unittest
+import shutil
 from datetime import datetime
 
 from server.schedule import Schedule
@@ -19,7 +20,7 @@ class TestSchedule(unittest.TestCase):
         self.schedule = Schedule(self.dir)
 
     def tearDown(self) -> None:
-        os.remove(self.dir)
+        shutil.rmtree(self.dir)
 
     def test_add_success(self):
 
@@ -52,7 +53,7 @@ class TestSchedule(unittest.TestCase):
         # remove the memory record of the schedule
         schedule.mem_sched = {}
 
-        for (date, uids) in pairs:
+        for (date, uids) in pairs.items():
             actual = schedule.get(date)
             expected = uids
             self.assertListEqual(actual, expected)
