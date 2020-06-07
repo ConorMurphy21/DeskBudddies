@@ -3,12 +3,15 @@ from datetime import datetime
 import os
 from pathlib import Path
 
+from cmnUtils import safeOpen
+
 
 class Schedule:
 
     def __init__(self, directory):
         self.lock = threading.Lock()
         self.directory = directory
+        safeOpen.mkdir_p(str(directory))
         self.mem_sched = {}
 
     def add(self, uid, date):

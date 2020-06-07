@@ -29,11 +29,11 @@ class TestSchedule(unittest.TestCase):
                  self.date2: ['Jen'],
                  self.date3: ['Aliyah']}
 
-        for (date, uids) in pairs:
+        for (date, uids) in pairs.items():
             for uid in uids:
                 schedule.add(uid, date)
 
-        for (date, uids) in pairs:
+        for (date, uids) in pairs.items():
             actual = schedule.get(date)
             expected = uids
             self.assertListEqual(actual, expected)
@@ -45,7 +45,7 @@ class TestSchedule(unittest.TestCase):
                  self.date2: ['Jen'],
                  self.date3: ['Aliyah']}
 
-        for (date, uids) in pairs:
+        for (date, uids) in pairs.items():
             for uid in uids:
                 schedule.add(uid, date)
 
@@ -58,7 +58,7 @@ class TestSchedule(unittest.TestCase):
             self.assertListEqual(actual, expected)
 
     def test_double_add(self):
-        schedule = Schedule()
+        schedule = self.schedule
         success = schedule.add('Jen', self.date1)
         self.assertTrue(success)
         success = schedule.add('Jen', self.date1)
