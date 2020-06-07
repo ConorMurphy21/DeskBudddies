@@ -89,6 +89,18 @@ class TestSchedule(unittest.TestCase):
         actual = schedule.get(self.date1)
         self.assertListEqual(expected, actual)
 
+    def test_add_two_remove_one_readd(self):
+        schedule = self.schedule
+
+        schedule.add('Jen', self.date1)
+        schedule.add('Conor', self.date1)
+        schedule.mem_sched = {}
+        schedule.remove('Jen', self.date1)
+        schedule.add('Jen', self.date1)
+
+        expected = ['Conor', 'Jen']
+        actual = schedule.get(self.date1)
+        self.assertListEqual(expected, actual)
 
 if __name__ == '__main__':
     unittest.main()
