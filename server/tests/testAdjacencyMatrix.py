@@ -18,7 +18,7 @@ class TestAdjacencyMatrix(unittest.TestCase):
             ['Conor', 1, 0]
         ]
         self.create_csv(table)
-        adjmat = AdjacencyMatrix(self.file_path)
+        adjmat = AdjacencyMatrix(self.file_path, False)
         self.assertTrue(adjmat.open)
         actual = adjmat.is_adjacent('Conor', 'Jen')
         self.assertTrue(actual)
@@ -30,7 +30,7 @@ class TestAdjacencyMatrix(unittest.TestCase):
             ['Conor', 1, 0]
         ]
         self.create_csv(table)
-        adjmat = AdjacencyMatrix(self.file_path)
+        adjmat = AdjacencyMatrix(self.file_path, False)
         self.assertTrue(adjmat.open)
         actual = adjmat.is_adjacent('Conor', 'Jen')
         self.assertTrue(actual)
@@ -42,7 +42,7 @@ class TestAdjacencyMatrix(unittest.TestCase):
             ['Conor', 1, '']
         ]
         self.create_csv(table)
-        adjmat = AdjacencyMatrix(self.file_path)
+        adjmat = AdjacencyMatrix(self.file_path, False)
         self.assertTrue(adjmat.open)
         actual = adjmat.is_adjacent('Conor', 'Jen')
         self.assertTrue(actual)
@@ -54,7 +54,7 @@ class TestAdjacencyMatrix(unittest.TestCase):
             ['Conor', '', '']
         ]
         self.create_csv(table)
-        adjmat = AdjacencyMatrix(self.file_path)
+        adjmat = AdjacencyMatrix(self.file_path, False)
         self.assertTrue(adjmat.open)
         actual = adjmat.is_adjacent('Conor', 'Jen')
         self.assertFalse(actual)
