@@ -24,30 +24,21 @@ class ServerQueryManager:
         datetime_obj = string_to_datetime(args['date'])
         results = []
         uids_on_day = self.schedule.get(datetime_obj)
-        adjacency = 3
         response_code = 3
 
         for uid in uids_on_day:
-            has_adjacency = self.adjmat.is_adjacent(args['uid'], uid)
-            results.append(uid)
-            if uid == args['uid']:
-                has_adjacency = False
-                results = "Already requested to work on that day"
+            if self.adjmat.is_adjacent(args['uid'], uid):
+                results.append(uid)
 
-        print(has_adjacency + "this is the intial thing")
-
-        if has_adjacency == False:
-            print(has_adjacency + "this is the good thing")
-
+        # problem
+        if len(results) > 0:
+            pass
+        else:
             # uid added to day successfully
             response_code = 200
             self.schedule.add(args['uid'], datetime_obj)
+            # This is not necessary, the user knows who he is
             results.append(args['uid'])
-        elif has_adjacency == True:
-            print(has_adjacency + "this is the bad thing")
-
-            # conflict (can't work on same day as someone scheduled for that day)
-            response_code = 409
 
         response = {'responseCode': response_code, 'results': results}
 

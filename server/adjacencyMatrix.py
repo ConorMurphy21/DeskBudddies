@@ -40,6 +40,8 @@ class AdjacencyMatrix:
             raise ValueError
 
     def is_adjacent(self, a, b) -> bool:
+        if a == b:
+            return False
         if not self.open:
             self.open_file()
             self.open = True
