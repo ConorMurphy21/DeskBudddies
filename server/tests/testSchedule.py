@@ -69,5 +69,26 @@ class TestSchedule(unittest.TestCase):
         self.assertListEqual(actual, expected)
 
 
+    def test_simple_remove(self):
+        schedule = self.schedule
+        schedule.add('Jen', self.date1)
+        schedule.add('Conor', self.date1)
+        schedule.remove('Jen', self.date1)
+        expected = ['Conor']
+        actual = schedule.get(self.date1)
+        self.assertListEqual(expected, actual)
+
+
+    def test_simple_remove_uncached(self):
+        schedule = self.schedule
+        schedule.add('Jen', self.date1)
+        schedule.add('Conor', self.date1)
+        schedule.mem_sched = {}
+        schedule.remove('Jen', self.date1)
+        expected = ['Conor']
+        actual = schedule.get(self.date1)
+        self.assertListEqual(expected, actual)
+
+
 if __name__ == '__main__':
     unittest.main()

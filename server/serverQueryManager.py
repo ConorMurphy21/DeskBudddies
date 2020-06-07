@@ -15,7 +15,10 @@ class ServerQueryManager:
                       Action.QUERY: self.add}
 
         self.schedule = Schedule(directoryFinder.server_schedule_dir())
-        self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file())
+        try:
+            self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file())
+        except FileNotFoundError:
+            pass
 
     def add(self, args: dict) -> dict:
         datetime_obj = string_to_datetime(args['date'])
