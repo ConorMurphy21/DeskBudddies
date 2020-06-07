@@ -1,6 +1,6 @@
 # These are all of the methods callable by the client, that interact with the server
-from cli.action import Action
-from cmnUtils import directoryFinder
+from cmnSys.action import Action
+from cmnSys import directoryFinder
 from cmnUtils.dateUtils import string_to_datetime
 from networking.packets.packet import Packet
 from server.adjacencyMatrix import AdjacencyMatrix

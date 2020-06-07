@@ -1,4 +1,4 @@
-from cmnUtils.simpleConfig import SimpleConfig
+from cmnSys.simpleConfig import SimpleConfig
 
 
 class ClientConfig(SimpleConfig):

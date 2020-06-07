@@ -6,7 +6,7 @@
 import json
 import struct
 
-from cli.action import Action
+from cmnSys.action import Action
 
 
 class Packet:

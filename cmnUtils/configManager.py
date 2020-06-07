@@ -1,8 +1,7 @@
 from prettytable import PrettyTable
 
-from cmnUtils import simpleConfig
 # These can methods can be static, because they are stateless
-from cmnUtils.simpleConfig import SimpleConfig
+from cmnSys.simpleConfig import SimpleConfig
 
 
 def user_config_interface(settings: SimpleConfig):
