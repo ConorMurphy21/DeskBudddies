@@ -27,7 +27,6 @@ class ServerQueryManager:
             if self.adjmat.is_adjacent(args['uid'], uid) == True:
                 results.append(uid)
 
-            print(self.adjmat.is_adjacent(args['uid'], uid))
 
         if len(results) > 0:
             # uid can't work on the same day as someone already working on that day
@@ -70,7 +69,17 @@ class ServerQueryManager:
         return response
 
     def get(self, args: dict) -> dict:
-        response = {}
+        datetime_obj = string_to_datetime(args['date'])
+        response_code = 3
+        results = {}
+        if not args['week']:
+            results[args['date']] = self.schedule.get(datetime_obj)
+            # uids on date gotten successfully
+            response_code = 200
+        else:
+            response_code = 417
+
+        response = {'responseCode': response_code, 'results': results}
 
         return response
 

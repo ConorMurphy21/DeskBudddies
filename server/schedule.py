@@ -60,6 +60,7 @@ class Schedule:
     def _update_date(self, timestamp_obj):
         f = open(str(self._get_file(timestamp_obj)), "w+")
         f.writelines(self.mem_sched[timestamp_obj])
+        f.write('\n')
         f.close()
 
     # appends just 1 item
