@@ -57,8 +57,8 @@ class ServerQueryManager:
             # uid removed from day successfully
             response_code = 200
 
-            results = self.schedule.get(datetime_obj)
-            count = results.count(args['uid'])
+            check = self.schedule.get(datetime_obj)
+            count = check.count(args['uid'])
 
         if count != 0:
             # uid was not removed correctly, expectation failed
