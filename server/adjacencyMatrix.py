@@ -51,7 +51,8 @@ class AdjacencyMatrix:
         if not self.open:
             self.open_file()
             self.open = True
-        return self.matrix[a][b] or self.matrix[b][a]
+
+        return int(self.matrix[a][b]) or int(self.matrix[b][a])
 
     def _is_valid(self, row1) -> bool:
         if len(self.matrix) != len(row1):
