@@ -94,8 +94,8 @@ class TestSchedule(unittest.TestCase):
 
         schedule.add('Jen', self.date1)
         schedule.add('Conor', self.date1)
-        schedule.mem_sched = {}
         schedule.remove('Jen', self.date1)
+        schedule.mem_sched = {}
         schedule.add('Jen', self.date1)
 
         expected = ['Conor', 'Jen']
