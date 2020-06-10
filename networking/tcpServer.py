@@ -1,9 +1,7 @@
 import socketserver
-import struct
 import threading
-from multiprocessing import Process
 
-from networking.packets import packet
+from networking import packet
 from server.serverQueryManager import ServerQueryManager
 
 
@@ -22,7 +20,7 @@ class TcpHandler(socketserver.BaseRequestHandler):
 class TcpServer:
 
     def __init__(self, port):
-        self.server = socketserver.ThreadingTCPServer(('', port), TcpHandler)
+        self.server = socketserver.TCPServer(('', port), TcpHandler)
 
     def run(self):
         threading.Thread(target=self.server.serve_forever).start()

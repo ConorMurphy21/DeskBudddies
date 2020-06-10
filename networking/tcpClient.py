@@ -5,8 +5,8 @@ import socket
 # this means the server has to respond with something, so we will make a null packet for this reason
 import struct
 
-from networking.packets import packet
-from networking.packets.packet import Packet
+from networking import packet
+from networking.packet import Packet
 
 
 def send_packet(pack: Packet, host, port) -> Packet:

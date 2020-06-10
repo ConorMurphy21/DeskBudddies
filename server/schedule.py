@@ -9,45 +9,36 @@ from cmnUtils import safeOpen
 class Schedule:
 
     def __init__(self, directory):
-        self.lock = threading.Lock()
         self.directory = directory
         safeOpen.mkdir_p(str(directory))
         self.mem_sched = {}
 
     def add(self, uid, date) -> bool:
         timestamp_obj = datetime.timestamp(date)
-        self.lock.acquire()
         ids = self._get_ids(timestamp_obj)
 
         if uid not in ids:
             self.mem_sched[timestamp_obj].append(uid)
             self._append_to_date(uid, timestamp_obj)
-            self.lock.release()
             return True
         else:
-            self.lock.release()
             return False
             
 
     def remove(self, uid, date) -> bool:
         timestamp_obj = datetime.timestamp(date)
-        self.lock.acquire()
         ids = self._get_ids(timestamp_obj)
 
         if uid in ids:
             self.mem_sched[timestamp_obj].remove(uid)
             self._update_date(timestamp_obj)
-            self.lock.release()
             return True
         else:
-            self.lock.release()
             return False
 
     def get(self, date) -> list:
-        self.lock.acquire()
         timestamp_obj = datetime.timestamp(date)
         ids = self._get_ids(timestamp_obj)
-        self.lock.release()
         return ids
 
     def get_week(self, date) -> list:

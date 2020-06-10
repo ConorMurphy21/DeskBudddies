@@ -3,9 +3,8 @@ from client.clientConfig import ClientConfig
 from cmnSys.responseCode import ResponseCode
 from cmnUtils import configManager
 from cmnSys import directoryFinder
-from networking import tcpClient
-from networking.packets import packet as pct
-from networking.packets.packet import Packet
+from networking import tcpClient, packet as pct
+from networking.packet import Packet
 
 
 def main(args):

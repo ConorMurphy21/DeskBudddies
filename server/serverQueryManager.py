@@ -2,7 +2,7 @@
 from cmnSys.action import Action
 from cmnSys import directoryFinder
 from cmnUtils.dateUtils import string_to_datetime
-from networking.packets.packet import Packet
+from networking.packet import Packet
 from server.adjacencyMatrix import AdjacencyMatrix
 from server.schedule import Schedule
 

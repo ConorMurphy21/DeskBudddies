@@ -11,9 +11,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Conor Murphy""Jennifer Gu",
     packages=['cli', 'client', 'cmnSys',
-              'cmnUtils', 'networking', 'server',
-              'networking.packets'
-              ],
+              'cmnUtils', 'networking', 'server'],
     install_requires=['appdirs', 'prettyTable'],
     entry_points={
         'console_scripts': [
