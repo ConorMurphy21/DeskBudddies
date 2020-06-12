@@ -102,5 +102,17 @@ class TestSchedule(unittest.TestCase):
         actual = schedule.get(self.date1)
         self.assertListEqual(expected, actual)
 
+
+    def test_read_empty_file(self):
+        schedule = self.schedule
+
+        schedule.add('Jen', self.date1)
+        schedule.remove('Jen', self.date1)
+        schedule.mem_sched = {}
+
+        expected = []
+        actual = schedule.get(self.date1)
+        self.assertListEqual(expected, actual)
+
 if __name__ == '__main__':
     unittest.main()

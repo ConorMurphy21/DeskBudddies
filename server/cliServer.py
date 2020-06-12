@@ -20,6 +20,7 @@ def main(args):
     else:
         if not directoryFinder.server_adjacency_file().is_file():
             print("No adjacency file found, please use the import flag to import an adjacency file.")
+            return
 
         print("Server is now running.")
         TcpServer(settings['port']).run(ServerQueryManager())
