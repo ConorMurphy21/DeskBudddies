@@ -18,14 +18,8 @@ def main(args):
         user_config_interface(settings)
     else:
         if not directoryFinder.server_adjacency_file().is_file():
-            get_adjmat().write_to_csv(directoryFinder.server_adjacency_file())
-        else:
-            if input("Would you like to update or change your adjacency file (y/n):") == 'y':
-                get_adjmat().write_to_csv(directoryFinder.server_adjacency_file())
+            print("No adjacency file found, please use the import flag to import an adjacency file.")
 
-        user_config_interface(settings)
-
-        # runs server in another thread
         TcpServer(settings['port']).run()
 
 
@@ -47,8 +41,9 @@ def import_adj(csv: str):
             print("Your adjacency file does not follow the expected format of an adjacency matrix!")
         else:
             print("Could not find: " + csv)
-    adj.write_to_csv(directoryFinder.server_adjacency_file())
-    print("Successfully imported adjacency file: ")
+    else:
+        adj.write_to_csv(directoryFinder.server_adjacency_file())
+        print("Successfully imported adjacency file: " + csv)
 
 
 def try_get_adj(csv: str):

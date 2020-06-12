@@ -10,7 +10,6 @@ from networking.packet import Packet
 
 
 def send_packet(pack: Packet, host, port) -> Packet:
-    print(pack.encode().decode('utf-8'))
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((host, port))
     s.send(pack.encode())

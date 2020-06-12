@@ -12,17 +12,19 @@ WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Communicate who can come into the office while maintaining social distancing')
-    parser.add_argument("-s", "--serve", action="store_true", help="Run a DeskBuddies server [action]")
-    parser.add_argument("-q", "--query", action="store_true",
+    parser.add_argument("--serve", action="store_true", help="Run a DeskBuddies server [action]")
+    parser.add_argument("--request", action="store_true",
                         help="Request to work (Requires date or day) [default action]")
     parser.add_argument("-r", "--remove", action="store_true",
                         help="Remove request to work (Requires date or day) [action]")
     parser.add_argument("-g", "--get", action="store_true", help="Request schedule (Requires date or day) [action]")
     parser.add_argument("-w", "--week", action="store_true", help="Request a week of schedule (get modifier)")
-    parser.add_argument("-p", "--config", action="store_true", help="Update client configuration properties [action]")
-    parser.add_argument("-c", "--date", type=str,
+    parser.add_argument("--config", action="store_true", help="Update client configuration properties [action]")
+    parser.add_argument("--servcfg", action="store_true", help="Update server configuration properties [action]")
+    parser.add_argument("-i", "--import", dest='adj', metavar='ADJACENCY', type=str, help="Import given adjacency file")
+    parser.add_argument("--date", type=str,
                         help="Calendar date in the form dd/mm, (format is configurable)")
-    parser.add_argument("-d", "--day", type=str, help="Weekday (full or abbreviated)")
+    parser.add_argument("--day", type=str, help="Weekday (full or abbreviated)")
     parser.add_argument("--action", help=argparse.SUPPRESS)
     args = parser.parse_args()
 
@@ -55,11 +57,12 @@ def _parse_and_validate(args) -> bool:
     else:
         no_date = True
 
-    actions = ['serve', 'config', 'query', 'remove', 'get']
+    # ORDER OF THIS ARRAY MATTERS, MUST MATCH THE ORDER OF ACTIONS
+    actions = ['servcfg', 'adj', 'serve', 'config', 'request', 'remove', 'get']
     args_dict = vars(args)
     num = 0
     # default action is get
-    args.action = Action.QUERY
+    args.action = Action.REQUEST
     for action in actions:
         if args_dict[action]:
             num += 1
@@ -70,7 +73,7 @@ def _parse_and_validate(args) -> bool:
         print("Multiple actions were requested. Only 1 action flag can be set.")
         return False
 
-    if args.action > Action.CONFIG and no_date:
+    if args.action.requires_date() and no_date:
         print(args.action.name.lower() + " requires a day or date to be set.")
         return False
 
