@@ -7,7 +7,7 @@ from server.serverQueryManager import ServerQueryManager
 
 class TcpHandler(socketserver.BaseRequestHandler):
 
-    manager = ServerQueryManager()
+    manager = None
 
     def handle(self):
         # self.request is the TCP socket connected to the client
@@ -22,7 +22,8 @@ class TcpServer:
     def __init__(self, port):
         self.server = socketserver.TCPServer(('', port), TcpHandler)
 
-    def run(self):
+    def run(self, sqm: ServerQueryManager):
+        TcpHandler.manager = sqm
         threading.Thread(target=self.server.serve_forever).start()
 
 

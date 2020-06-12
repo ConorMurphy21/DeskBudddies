@@ -15,7 +15,7 @@ class ServerQueryManager:
                       Action.REQUEST: self.add}
 
         self.schedule = Schedule(directoryFinder.server_schedule_dir())
-        self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file(), True)
+        self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file())
 
     def add(self, args: dict) -> dict:
         datetime_obj = string_to_datetime(args['date'])

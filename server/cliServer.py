@@ -6,6 +6,7 @@ from cmnUtils.configManager import user_config_interface
 from networking.tcpServer import TcpServer
 from server.adjacencyMatrix import AdjacencyMatrix
 from server.serverConfig import ServerConfig
+from server.serverQueryManager import ServerQueryManager
 
 
 def main(args):
@@ -20,7 +21,8 @@ def main(args):
         if not directoryFinder.server_adjacency_file().is_file():
             print("No adjacency file found, please use the import flag to import an adjacency file.")
 
-        TcpServer(settings['port']).run()
+        print("Server is now running.")
+        TcpServer(settings['port']).run(ServerQueryManager())
 
 
 def get_adjmat() -> AdjacencyMatrix:
@@ -48,6 +50,6 @@ def import_adj(csv: str):
 
 def try_get_adj(csv: str):
     try:
-        return AdjacencyMatrix(csv, False)
+        return AdjacencyMatrix(csv)
     except FileNotFoundError:
         return None

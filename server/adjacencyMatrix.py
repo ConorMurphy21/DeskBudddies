@@ -3,18 +3,10 @@ import csv
 
 class AdjacencyMatrix:
 
-    def __init__(self, directory, suppress):
+    def __init__(self, directory):
         self.directory = directory
         self.matrix = {}
-        self.open = False
-        if suppress:
-            try:
-                self.open_file()
-            except FileNotFoundError:
-                pass
-        else:
-            self.open_file()
-        self.open = True
+        self.open_file()
 
     def write_to_csv(self, directory):
         with open(directory, "w+", encoding="utf-8-sig", newline='') as csvfile:
@@ -47,10 +39,6 @@ class AdjacencyMatrix:
     def is_adjacent(self, a, b) -> bool:
         if a == b:
             return False
-        if not self.open:
-            self.open_file()
-            self.open = True
-
         return int(self.matrix[a][b]) or int(self.matrix[b][a])
 
     def _is_valid(self, row1) -> bool:
