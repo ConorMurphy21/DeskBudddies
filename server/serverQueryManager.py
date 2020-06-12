@@ -12,7 +12,7 @@ class ServerQueryManager:
     def __init__(self):
         self.funcs = {Action.GET: self.get,
                       Action.REMOVE: self.remove,
-                      Action.QUERY: self.add}
+                      Action.REQUEST: self.add}
 
         self.schedule = Schedule(directoryFinder.server_schedule_dir())
         self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file(), True)

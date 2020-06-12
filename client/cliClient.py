@@ -59,6 +59,6 @@ def _get_response(response: Packet) -> str:
 
 def _parse_response(response: Packet) -> str:
     funcs = {Action.GET: _get_response,
-             Action.QUERY: _add_response,
+             Action.REQUEST: _add_response,
              Action.REMOVE: _remove_response}
     return funcs[response.action](response)

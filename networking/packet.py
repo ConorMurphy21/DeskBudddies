@@ -11,7 +11,7 @@ from cmnSys.action import Action
 
 class Packet:
     # required fields for each action
-    REQS = {Action.QUERY: ['uid', 'date'],
+    REQS = {Action.REQUEST: ['uid', 'date'],
             Action.GET: ['date', 'week'],
             Action.REMOVE: ['uid', 'date']}
 

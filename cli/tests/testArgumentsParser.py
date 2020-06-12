@@ -8,10 +8,10 @@ class MyTestCase(unittest.TestCase):
     def test_parse_and_validate_day(self):
         days = ['Mon', 'FRIDAY', 'wed', 'thurs', 'tues', 'tue', 'Saturday', 'sun']
         expected = [0, 4, 2, 3, 1, 1, 5, 6]
-        args = ArgsModel()
-        args.query = True
 
         for day in days:
+            args = ArgsModel()
+            args.request = True
             args.day = day
             success = argsParser._parse_and_validate(args)
             self.assertTrue(success)
@@ -41,7 +41,7 @@ class MyTestCase(unittest.TestCase):
         success = argsParser._parse_and_validate(args)
         self.assertFalse(success)
         args = ArgsModel()
-        args.query = True
+        args.request = True
         args.remove = True
         args.day = 'Mon'
         success = argsParser._parse_and_validate(args)
@@ -101,10 +101,12 @@ class ArgsModel:
 
     def __init__(self):
         self.serve = False
-        self.query = False
+        self.request = False
         self.remove = False
         self.get = False
         self.config = False
+        self.servcfg = False
+        self.adj = ''
         self.action = None
         self.day = None
         self.date = None
