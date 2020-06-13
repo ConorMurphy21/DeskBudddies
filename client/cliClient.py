@@ -47,9 +47,14 @@ def _add_response(response: Packet) -> str:
     if code == ResponseCode.OK:
         return "Successfully added you to the schedule!"
     elif code == ResponseCode.CONFLICT:
-        return "Can't work on the same day as " + ', '.join(data['results'])
+        return "Request denied due to these coworkers working this day: " + ', '.join(data['results'])
     elif code == ResponseCode.UNEXPECTED:
         return "You are already scheduled to work this day."
+    elif code == ResponseCode.FORCED:
+        return "You were successfully added to the schedule. Please notify: " + ', '.join(data['results'])
+    elif code == ResponseCode.FORCE_FAILED:
+        return "Unfortunately the server has disabled the force flag, and your request was denied due to these " \
+               "coworkers working this day: " + ','.join(data['results'])
     elif code == ResponseCode.NOT_FOUND:
         return "There is no user id with the uid: " + data['results'][0] + ". Please contact your administrator."
     elif code == ResponseCode.FORBIDDEN:

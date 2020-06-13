@@ -6,6 +6,7 @@ from cmnUtils.dateUtils import string_to_datetime
 from networking.packet import Packet
 from server.adjacencyMatrix import AdjacencyMatrix
 from server.schedule import Schedule
+from server.serverConfig import ServerConfig
 
 
 class ServerQueryManager:
@@ -17,6 +18,7 @@ class ServerQueryManager:
 
         self.schedule = Schedule(directoryFinder.server_schedule_dir())
         self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file())
+        self.settings = ServerConfig(directoryFinder.server_config_file())
 
     def add(self, args: dict) -> dict:
         datetime_obj = string_to_datetime(args['date'])
@@ -36,7 +38,19 @@ class ServerQueryManager:
 
             if len(results) > 0:
                 # uid can't work on the same day as someone already working on that day
-                response_code = ResponseCode.CONFLICT
+                if self.settings['enableForce'] and args['force']:
+                    added = self.schedule.add(args['uid'], datetime_obj)
+                    if not added:
+                        # uid not added successfully
+                        response_code = ResponseCode.UNEXPECTED
+                    else:
+                        # uid added to day successfully
+                        response_code = ResponseCode.FORCED
+                elif args['force']:
+                    response_code = ResponseCode.FORCE_FAILED
+                else:
+                    response_code = ResponseCode.CONFLICT
+
             else:
                 added = self.schedule.add(args['uid'], datetime_obj)
                 if not added:

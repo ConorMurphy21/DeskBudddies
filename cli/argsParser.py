@@ -15,6 +15,7 @@ def parse_args():
     parser.add_argument("--serve", action="store_true", help="Run a DeskBuddies server [action]")
     parser.add_argument("--request", action="store_true",
                         help="Request to work (Requires date or day) [default action]")
+    parser.add_argument("-f", "--force", action="store_true", help="Force request to go through without safety checks")
     parser.add_argument("-r", "--remove", action="store_true",
                         help="Remove request to work (Requires date or day) [action]")
     parser.add_argument("-g", "--get", action="store_true", help="Request schedule (Requires date or day) [action]")

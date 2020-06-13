@@ -7,3 +7,5 @@ class ResponseCode(IntEnum):
     UNEXPECTED = 417
     NOT_FOUND = 404
     FORBIDDEN = 403
+    FORCED = 405
+    FORCE_FAILED = 406
