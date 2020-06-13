@@ -51,3 +51,7 @@ class AdjacencyMatrix:
                 return False
 
         return True
+
+    def includes(self, uid) -> bool:
+        row1 = list(self.matrix.keys())
+        return uid in row1

@@ -2,5 +2,8 @@ from enum import IntEnum
 
 
 class ResponseCode(IntEnum):
-    OK = 0
-    CONFLICT = 407
+    OK = 200
+    CONFLICT = 409
+    UNEXPECTED = 417
+    NOT_FOUND = 404
+    FORBIDDEN = 403
