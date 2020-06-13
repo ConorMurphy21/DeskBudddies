@@ -64,3 +64,10 @@ class AdjacencyMatrix:
                 return False
 
         return True
+
+    def includes(self, uid):
+        row1 = list(self.matrix.keys())
+        occur = row1.count(uid)
+        if occur == 0:
+            return False
+        return True
