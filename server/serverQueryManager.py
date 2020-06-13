@@ -24,21 +24,27 @@ class ServerQueryManager:
         uids_on_day = self.schedule.get(datetime_obj)
         response_code = ResponseCode.FORBIDDEN
 
-        for uid in uids_on_day:
-            if self.adjmat.is_adjacent(args['uid'], uid):
-                results.append(uid)
-
-        if len(results) > 0:
-            # uid can't work on the same day as someone already working on that day
-            response_code = ResponseCode.CONFLICT
+        if not self.adjmat.includes(args['uid']):
+            # uid not in adjacency matrix
+            response_code = ResponseCode.NOT_FOUND
+            results.append(args['uid'])
         else:
-            added = self.schedule.add(args['uid'], datetime_obj)
-            if not added:
-                # uid not added successfully
-                response_code = ResponseCode.UNEXPECTED
+            for uid in uids_on_day:
+                print(uid)
+                if self.adjmat.is_adjacent(args['uid'], uid):
+                    results.append(uid)
+
+            if len(results) > 0:
+                # uid can't work on the same day as someone already working on that day
+                response_code = ResponseCode.CONFLICT
             else:
-                # uid added to day successfully
-                response_code = ResponseCode.OK
+                added = self.schedule.add(args['uid'], datetime_obj)
+                if not added:
+                    # uid not added successfully
+                    response_code = ResponseCode.UNEXPECTED
+                else:
+                    # uid added to day successfully
+                    response_code = ResponseCode.OK
 
         response = {'responseCode': response_code, 'results': results}
         return response
@@ -47,23 +53,29 @@ class ServerQueryManager:
         datetime_obj = string_to_datetime(args['date'])
         response_code = ResponseCode.FORBIDDEN
         results = []
-        uids_on_day = self.schedule.get(datetime_obj)
 
-        count = uids_on_day.count(args['uid'])
-        if count == 0:
-            # uid not found on day
+        if not self.adjmat.includes(args['uid']):
+            # uid not in adjacency matrix
             response_code = ResponseCode.NOT_FOUND
+            results.append(args['uid'])
         else:
-            self.schedule.remove(args['uid'], datetime_obj)
-            # uid removed from day successfully
-            response_code = ResponseCode.OK
+            uids_on_day = self.schedule.get(datetime_obj)
+            count = uids_on_day.count(args['uid'])
 
-            check = self.schedule.get(datetime_obj)
-            count = check.count(args['uid'])
+            if count == 0:
+                # uid not found on day
+                response_code = ResponseCode.NOT_FOUND
+            else:
+                self.schedule.remove(args['uid'], datetime_obj)
+                # uid removed from day successfully
+                response_code = ResponseCode.OK
 
-        if count != 0:
-            # uid was not removed correctly, expectation failed
-            response_code = ResponseCode.UNEXPECTED
+                check = self.schedule.get(datetime_obj)
+                count = check.count(args['uid'])
+
+            if count != 0:
+                # uid was not removed correctly, expectation failed
+                response_code = ResponseCode.UNEXPECTED
 
         response = {'responseCode': response_code, 'results': results}
         return response
@@ -73,7 +85,7 @@ class ServerQueryManager:
         response_code = ResponseCode.FORBIDDEN
         results = {}
         if not args['week']:
-            results[args['date']] = self.schedule.get(datetime_obj)
+            results = self.schedule.get(datetime_obj)
             # uids on date gotten successfully
             response_code = ResponseCode.OK
         else:

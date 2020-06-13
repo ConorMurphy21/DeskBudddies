@@ -51,9 +51,11 @@ def _add_response(response: Packet) -> str:
     elif code == ResponseCode.CONFLICT:
         return "Can't work on the same day as " + ', '.join(data['results'])
     elif code == ResponseCode.UNEXPECTED:
-        return "Unsuccessfully added you to the schedule"
+        return "You are already scheduled to work this day."
+    elif code == ResponseCode.NOT_FOUND:
+        return "There is no user id with the uid: " + data['results'][0] + ". Please contact your administrator."
     elif code == ResponseCode.FORBIDDEN:
-        return "Something has gone terribly wrong"
+        return "Something has gone terribly wrong."
 
 
 def _remove_response(response: Packet) -> str:
@@ -64,7 +66,9 @@ def _remove_response(response: Packet) -> str:
     elif code == ResponseCode.NOT_FOUND:
         return "Not scheduled for this day!"
     elif code == ResponseCode.UNEXPECTED:
-        return "Unsuccessfully removed you from the schedule"
+        return "Unsuccessfully removed you from the schedule."
+    elif code == ResponseCode.NOT_FOUND:
+        return "There is no user id with the uid: " + data['results'][0] + ". Please contact your administrator."
     elif code == ResponseCode.FORBIDDEN:
         return "Something has gone terribly wrong"
 
@@ -73,7 +77,7 @@ def _get_response(response: Packet) -> str:
     data = response.data
     code = ResponseCode(data['responseCode'])
     if code == ResponseCode.OK:
-        return "Successfully got uids from the schedule!"
+        return "Successfully got uids from the schedule:".join(data['results'])
     elif code == ResponseCode.UNEXPECTED:
         return "Unsuccessfully got uids from the schedule!"
     elif code == ResponseCode.FORBIDDEN:
