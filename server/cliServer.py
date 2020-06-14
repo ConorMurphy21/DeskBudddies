@@ -17,6 +17,7 @@ def main(args):
         import_adj(args.adj)
     elif args.action == Action.SERVCFG:
         user_config_interface(settings)
+        settings.write()
     else:
         if not directoryFinder.server_adjacency_file().is_file():
             print("No adjacency file found, please use the import flag to import an adjacency file.")
