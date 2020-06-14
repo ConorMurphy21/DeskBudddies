@@ -2,7 +2,7 @@ import csv
 
 
 class AdjacencyMatrix:
-    FALSE_STRS = ['False', '', 'no', '0']
+    FALSE_STRS = ['false', '', 'no', '0']
 
     def __init__(self, directory):
         self.directory = directory
@@ -58,5 +58,5 @@ class AdjacencyMatrix:
         return True
 
     def _boolify(self, file_arg) -> bool:
-        return file_arg not in self.FALSE_STRS
+        return file_arg.lower() not in self.FALSE_STRS
 
