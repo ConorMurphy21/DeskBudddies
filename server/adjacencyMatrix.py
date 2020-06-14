@@ -58,7 +58,5 @@ class AdjacencyMatrix:
         return True
 
     def _boolify(self, file_arg) -> bool:
-        if file_arg in self.FALSE_STRS:
-            return False
-        else:
-            return True
+        return file_arg not in self.FALSE_STRS
+
