@@ -32,7 +32,6 @@ class ServerQueryManager:
             results.append(args['uid'])
         else:
             for uid in uids_on_day:
-                print(uid)
                 if self.adjmat.is_adjacent(args['uid'], uid):
                     results.append(uid)
 
