@@ -2,13 +2,13 @@ from cmnSys.action import Action
 from client.clientConfig import ClientConfig
 from cmnSys.responseCode import ResponseCode
 from cmnUtils import configManager
-from cmnSys import directoryFinder
+from cmnSys import directoryFinder, configInstance
 from networking import tcpClient, packet as pct
 from networking.packet import Packet
 
 
 def main(args):
-    settings = ClientConfig(directoryFinder.client_config_file())
+    settings = configInstance.clientConfig
     if args.action == Action.CONFIG:
         _config(settings)
         return

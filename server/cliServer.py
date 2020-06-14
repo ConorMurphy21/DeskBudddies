@@ -1,17 +1,16 @@
 import os
 
-from cmnSys import directoryFinder
+from cmnSys import directoryFinder, configInstance
 from cmnSys.action import Action
 from cmnUtils.configManager import user_config_interface
 from networking.tcpServer import TcpServer
 from server.adjacencyMatrix import AdjacencyMatrix
-from server.serverConfig import ServerConfig
 from server.serverQueryManager import ServerQueryManager
 
 
 def main(args):
     # get settings
-    settings = ServerConfig(directoryFinder.server_config_file())
+    settings = configInstance.serverConfig
     # get adjacency file up to date
     if args.action == Action.IMPORT:
         import_adj(args.adj)
