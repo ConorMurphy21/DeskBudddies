@@ -1,12 +1,11 @@
 # These are all of the methods callable by the client, that interact with the server
 from cmnSys.action import Action
-from cmnSys import directoryFinder
+from cmnSys import directoryFinder, configInstance
 from cmnSys.responseCode import ResponseCode
 from cmnUtils.dateUtils import string_to_datetime
 from networking.packet import Packet
 from server.adjacencyMatrix import AdjacencyMatrix
 from server.schedule import Schedule
-from server.serverConfig import ServerConfig
 
 
 class ServerQueryManager:
@@ -18,7 +17,7 @@ class ServerQueryManager:
 
         self.schedule = Schedule(directoryFinder.server_schedule_dir())
         self.adjmat = AdjacencyMatrix(directoryFinder.server_adjacency_file())
-        self.settings = ServerConfig(directoryFinder.server_config_file())
+        self.settings = configInstance.serverConfig
 
     def add(self, args: dict) -> dict:
         datetime_obj = string_to_datetime(args['date'])
