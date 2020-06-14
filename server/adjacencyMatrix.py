@@ -31,7 +31,7 @@ class AdjacencyMatrix:
                 i = 1
                 self.matrix[row[0]] = {}
                 for uids in row1:
-                    self.matrix[row[0]][uids] = row[i]
+                    self.matrix[row[0]][uids] = self._boolify(row[i])
                     i += 1
         if not self._is_valid(row1):
             raise ValueError
@@ -39,7 +39,7 @@ class AdjacencyMatrix:
     def is_adjacent(self, a, b) -> bool:
         if a == b:
             return False
-        return self._boolify(self.matrix[a][b]) or self._boolify(self.matrix[b][a])
+        return self.matrix[a][b] or self.matrix[b][a]
 
     def includes(self, uid) -> bool:
         row1 = list(self.matrix.keys())
