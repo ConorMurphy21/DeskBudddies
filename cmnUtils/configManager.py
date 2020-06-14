@@ -23,9 +23,12 @@ def user_config_interface(settings: SimpleConfig):
         if prop == 'q':
             break
         try:
-            val = type(settings[prop])(val)
+            if prop in settings.parsers.keys():
+                val = settings.parsers[prop](val)
+            else:
+                val = type(settings[prop])(val)
             settings[prop] = val
         except ValueError:
-            print("Value could not be converted to the expected datatype")
+            print("The value entered was not recognized as a valid value.")
 
 

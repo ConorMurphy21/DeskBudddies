@@ -11,6 +11,8 @@ class SimpleConfig(UserDict):
     def __init__(self, json_file_path):
         self.json_file_path = json_file_path
         self.set_default_data()
+        self.parsers = {}
+        self.set_parse_funcs()
         try:
             with open(json_file_path) as json_file:
                 client_set = json.load(json_file)
@@ -24,4 +26,7 @@ class SimpleConfig(UserDict):
             json.dump(self.data, file)
 
     def set_default_data(self):
+        pass
+
+    def set_parse_funcs(self):
         pass
