@@ -2,6 +2,7 @@ import csv
 
 
 class AdjacencyMatrix:
+    FALSE_STRS = ['false', '', 'no', '0']
 
     def __init__(self, directory):
         self.directory = directory
@@ -31,7 +32,7 @@ class AdjacencyMatrix:
                 i = 1
                 self.matrix[row[0]] = {}
                 for uids in row1:
-                    self.matrix[row[0]][uids] = row[i]
+                    self.matrix[row[0]][uids] = self._boolify(row[i])
                     i += 1
         if not self._is_valid(row1):
             raise ValueError
@@ -39,7 +40,11 @@ class AdjacencyMatrix:
     def is_adjacent(self, a, b) -> bool:
         if a == b:
             return False
-        return int(self.matrix[a][b]) or int(self.matrix[b][a])
+        return self.matrix[a][b] or self.matrix[b][a]
+
+    def includes(self, uid) -> bool:
+        row1 = list(self.matrix.keys())
+        return uid in row1
 
     def _is_valid(self, row1) -> bool:
         if len(self.matrix) != len(row1):
@@ -52,6 +57,6 @@ class AdjacencyMatrix:
 
         return True
 
-    def includes(self, uid) -> bool:
-        row1 = list(self.matrix.keys())
-        return uid in row1
+    def _boolify(self, file_arg) -> bool:
+        return file_arg.lower() not in self.FALSE_STRS
+
