@@ -39,7 +39,11 @@ class AdjacencyMatrix:
     def is_adjacent(self, a, b) -> bool:
         if a == b:
             return False
-        return int(self.matrix[a][b]) or int(self.matrix[b][a])
+        return self._boolify(self.matrix[a][b]) or self._boolify(self.matrix[b][a])
+
+    def includes(self, uid) -> bool:
+        row1 = list(self.matrix.keys())
+        return uid in row1
 
     def _is_valid(self, row1) -> bool:
         if len(self.matrix) != len(row1):
@@ -52,6 +56,8 @@ class AdjacencyMatrix:
 
         return True
 
-    def includes(self, uid) -> bool:
-        row1 = list(self.matrix.keys())
-        return uid in row1
+    def _boolify(self, file_arg) -> bool:
+        if not file_arg or file_arg == '' or file_arg == 'no':
+            return False
+        else:
+            return True
