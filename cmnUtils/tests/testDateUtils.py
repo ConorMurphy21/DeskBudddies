@@ -68,7 +68,11 @@ class MyTestCase(unittest.TestCase):
     def test_parse_date_day_month(self):
         date = dt.date.today()
         self.assert_date_parse_works(date, "%d%m")
-        date = dt.date.today() + dt.timedelta(days=1)
+        date = dt.date.today() + dt.timedelta(days=40)
+        self.assert_date_parse_works(date, "%d%m")
+        date = dt.date.today() + dt.timedelta(days=364)
+        self.assert_date_parse_works(date, "%d%m")
+
 
 
     def assert_date_parse_works(self, date: dt.date, date_format: str):
