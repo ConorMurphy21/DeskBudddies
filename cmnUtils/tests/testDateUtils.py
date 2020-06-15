@@ -33,5 +33,16 @@ class MyTestCase(unittest.TestCase):
             firstday = firstday + dt.timedelta(weeks=1)
 
 
+    def test_validate_date_format_success(self):
+        valid_formats = ['%d,%m,%Y', '%d/%b %H %I', '%d', '%B.%d %p', '%d/%m/%y']
+        for date_format in valid_formats:
+            self.assertTrue(util.validate_date_format(date_format))
+
+    def test_validate_date_format_fail(self):
+        invalid_formats = ['', '%m', '%m,%Y', '%d,%Y', '%b/%y/%I/%H']
+        for date_format in invalid_formats:
+            self.assertFalse(util.validate_date_format(date_format))
+
+
 if __name__ == '__main__':
     unittest.main()
