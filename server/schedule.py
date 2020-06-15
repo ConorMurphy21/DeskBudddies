@@ -49,10 +49,13 @@ class Schedule:
 
     # stores everything on given date
     def _update_date(self, timestamp_obj):
-        f = open(str(self._get_file(timestamp_obj)), "w+")
-        f.writelines(self.mem_sched[timestamp_obj])
-        f.write('\n')
-        f.close()
+        if not self.mem_sched[timestamp_obj]:
+            os.remove(str(self._get_file(timestamp_obj)))
+        else:
+            f = open(str(self._get_file(timestamp_obj)), "w+")
+            f.writelines(self.mem_sched[timestamp_obj])
+            f.write('\n')
+            f.close()
 
     # appends just 1 item
     def _append_to_date(self, uid, timestamp_obj):
