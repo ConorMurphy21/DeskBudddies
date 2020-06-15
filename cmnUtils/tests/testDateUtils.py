@@ -32,7 +32,6 @@ class MyTestCase(unittest.TestCase):
                 day = day + dt.timedelta(days=1)
             firstday = firstday + dt.timedelta(weeks=1)
 
-
     def test_validate_date_format_success(self):
         valid_formats = ['%d,%m,%Y', '%d/%b %H %I', '%d', '%B.%d %p', '%d/%m/%y']
         for date_format in valid_formats:
@@ -42,6 +41,17 @@ class MyTestCase(unittest.TestCase):
         invalid_formats = ['', '%m', '%m,%Y', '%d,%Y', '%b/%y/%I/%H']
         for date_format in invalid_formats:
             self.assertFalse(util.validate_date_format(date_format))
+
+    def test_parse_date_past_date(self):
+        date = dt.datetime(2019, 1, 1)
+        date_str = date.strftime("%Y%m%d")
+        self.assertRaises(util.parse_date_str(date_str, "%Y%m%d"))
+
+    def test_today_success(self):
+        date = dt.date.today()
+        date_str = date.strftime("%Y%m%d")
+        result = util.parse_date_str(date_str, "%Y%m%d").strftime("%Y%m%d")
+        self.assertEqual(date_str, result)
 
 
 if __name__ == '__main__':
