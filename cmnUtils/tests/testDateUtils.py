@@ -45,13 +45,38 @@ class MyTestCase(unittest.TestCase):
     def test_parse_date_past_date(self):
         date = dt.datetime(2019, 1, 1)
         date_str = date.strftime("%Y%m%d")
-        self.assertRaises(util.parse_date_str(date_str, "%Y%m%d"))
+        self.assertRaises(ValueError, lambda: util.parse_date_str(date_str, "%Y%m%d"))
 
     def test_today_success(self):
         date = dt.date.today()
         date_str = date.strftime("%Y%m%d")
         result = util.parse_date_str(date_str, "%Y%m%d").strftime("%Y%m%d")
         self.assertEqual(date_str, result)
+
+    def test_parse_date_just_day(self):
+        # at least 1 of these should stay in the same month
+        # at least 1 of these should go to the next
+        date = dt.date.today()
+        self.assert_date_parse_works(date, "%d")
+        date = dt.date.today() + dt.timedelta(days=1)
+        self.assert_date_parse_works(date, "%d")
+        date = dt.date.today() - dt.timedelta(days=6)
+        self.assert_date_parse_works(date, "%d")
+        date = dt.date.today() - dt.timedelta(days=31)
+        self.assert_date_parse_works(date, "%d")
+
+    def test_parse_date_day_month(self):
+        date = dt.date.today()
+        self.assert_date_parse_works(date, "%d%m")
+        date = dt.date.today() + dt.timedelta(days=1)
+
+
+    def assert_date_parse_works(self, date: dt.date, date_format: str):
+        date_str = date.strftime(date_format)
+        actual = util.parse_date_str(date_str, date_format).strftime("%Y%m%d")
+        expected = date.strftime("%Y%m%d")
+        self.assertEqual(actual, expected)
+
 
 
 if __name__ == '__main__':
