@@ -1,8 +1,13 @@
+import datetime
+
+from prettytable import PrettyTable
+
 from cmnSys.action import Action
 from client.clientConfig import ClientConfig
 from cmnSys.responseCode import ResponseCode
 from cmnUtils import configManager
 from cmnSys import directoryFinder, configInstance
+from cmnUtils.dateUtils import string_to_datetime
 from networking import tcpClient, packet as pct
 from networking.packet import Packet
 
@@ -80,6 +85,18 @@ def _get_response(response: Packet) -> str:
     data = response.data
     code = ResponseCode(data['responseCode'])
     if code == ResponseCode.OK:
+        if data['first_day']:
+            table = PrettyTable()
+            first_day = string_to_datetime(data['first_day'])
+
+            for i in range(6):
+                next_day = first_day + datetime.timedelta(days=i)
+                uids_on_day = data['schedule'][i]
+                if uids_on_day:
+                    string = '\n'.join(uids_on_day)
+                    table.add_column(next_day.strftime('%Y%m%d'), [string])
+
+            return str(table)
         return "Successfully got uids from the schedule:" + ", ".join(data['results'])
     elif code == ResponseCode.UNEXPECTED:
         return "Unsuccessfully got uids from the schedule!"

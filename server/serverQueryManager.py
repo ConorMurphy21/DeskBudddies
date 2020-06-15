@@ -1,8 +1,11 @@
 # These are all of the methods callable by the client, that interact with the server
+import datetime
+
+
 from cmnSys.action import Action
 from cmnSys import directoryFinder, configInstance
 from cmnSys.responseCode import ResponseCode
-from cmnUtils.dateUtils import string_to_datetime
+from cmnUtils.dateUtils import string_to_datetime, get_week
 from networking.packet import Packet
 from server.adjacencyMatrix import AdjacencyMatrix
 from server.schedule import Schedule
@@ -96,14 +99,24 @@ class ServerQueryManager:
         datetime_obj = string_to_datetime(args['date'])
         response_code = ResponseCode.FORBIDDEN
         results = {}
-        if not args['week']:
+        schedule = []
+        first_day = ''
+        if args['week']:
+            first_day = get_week(datetime_obj, True)
+            week = []
+            i = 0
+            while i < 7:
+                next_day = first_day + datetime.timedelta(days=i)
+                schedule.append(self.schedule.get(next_day))
+                i += 1
+            response_code = ResponseCode.OK
+            first_day = first_day.strftime('%Y%m%d')
+        else:
             results = self.schedule.get(datetime_obj)
             # uids on date gotten successfully
             response_code = ResponseCode.OK
-        else:
-            response_code = ResponseCode.UNEXPECTED
 
-        response = {'responseCode': response_code, 'results': results}
+        response = {'responseCode': response_code, 'first_day': first_day, 'results': results, 'schedule': schedule}
         return response
 
     def respond(self, packet: Packet) -> Packet:
