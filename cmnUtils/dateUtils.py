@@ -87,7 +87,7 @@ def parse_date_str(date_str: str, format_str: str) -> datetime:
     parsed_date = datetime.datetime.strptime(date_str, format_str)
     type_date_format = _format_type(format_str)
     if type_date_format == 0:
-        raise ValueError("bad date format somehow")
+        raise ValueError("Unable to parse from improper date format")
     if type_date_format == 1:  # only day is given
         parsed_date_zeroed = datetime.datetime(true_date.year, true_date.month, parsed_date.day)
         if parsed_date_zeroed < true_date:
@@ -105,6 +105,6 @@ def parse_date_str(date_str: str, format_str: str) -> datetime:
         fixed_parsed_date = datetime.datetime(parsed_date.year, parsed_date.month, parsed_date.day)
 
     if fixed_parsed_date < true_date:
-       raise ValueError("in the past")
+       raise ValueError()
     return fixed_parsed_date
 
