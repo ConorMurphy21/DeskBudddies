@@ -24,6 +24,7 @@ def get_week(weekday: datetime, mondayfirstday: bool) -> datetime:
         weekday -= datetime.timedelta(days=day)
     return datetime.datetime(weekday.year, weekday.month, weekday.day)
 
+
 def validate_date_format(format_str: str) -> bool:
     #  tests date string format with 2 test dates to ensure sufficient data is kept from parsing
     date1 = datetime.datetime(2018, 11, 7)
@@ -47,9 +48,10 @@ def _date_test(test_datetime: datetime, format_str: str) -> int:
     year_new = test_datetime_new.year
     month_new = test_datetime_new.month
     day_new = test_datetime_new.day
+
     if day != day_new:
         return 0
-    if year != year_new:
+    if year != year_new or year < 2000:
         if month != month_new:
             return 1
         else:
@@ -60,36 +62,49 @@ def _date_test(test_datetime: datetime, format_str: str) -> int:
         return 0
 
 
+def _format_type(date_format: str) -> int:
+    expected1 = datetime.datetime(2000, 2, 2)
+    expected2 = datetime.datetime(2001, 3, 3)
+    actual1 = datetime.datetime.strptime(expected1.strftime(date_format), date_format)
+    actual2 = datetime.datetime.strptime(expected2.strftime(date_format), date_format)
+    has_year = actual1.year == expected1.year and actual2.year == expected2.year
+    has_month = actual1.month == expected1.month and actual2.month == expected2.month
+    has_day = actual1.day == expected1.day and actual2.day == expected2.day
+    if has_year and has_month and has_day:
+        return 3
+    elif has_month and has_day:
+        return 2
+    elif has_day:
+        return 1
+    else:
+        return 0
+
 def parse_date_str(date_str: str, format_str: str) -> datetime:
     #  assuming format_str has been checked with validate function
-    parsed_date = datetime.datetime.strptime(date_str, format_str)
-    tomorrow_datetime = datetime.datetime.now()
-    current_day = datetime.date(tomorrow_datetime.year,tomorrow_datetime.month,tomorrow_datetime.day)
-    #   move it back one day
-    tomorrow_datetime = datetime.date(tomorrow_datetime.year, tomorrow_datetime.month, tomorrow_datetime.day - 1)
-    type_date_format = _date_test(parsed_date, format_str)
-    if type_date_format == 0:
-        raise ValueError()
-    if type_date_format == 1:  # only day is given
-        parsed_date_zeroed = datetime.date(parsed_date)
-        days_to_add = abs(current_day.day - parsed_date_zeroed().day)
-        if parsed_date_zeroed == current_day:
-            fixed_parsed_date = datetime.datetime(parsed_date.year, parsed_date.month, parsed_date.day)
-        elif parsed_date_zeroed > current_day:
-            fixed_parsed_date = current_day + current_day.timedelta(days=days_to_add)
-        else:
-            fixed_parsed_date = current_day - current_day.timedelta(days=days_to_add)
-    if type_date_format == 2:  # only day month is given
-        parsed_date = parsed_date.date().replace(year=current_day.year)
-        if parsed_date >= current_day:
-            # if greater then go back one year
-            parsed_date = parsed_date.replace(year=tomorrow_datetime.year - 1)
-            fixed_parsed_date = datetime.datetime(parsed_date.year, parsed_date.month, parsed_date.day)
-    else:
-        fixed_parsed_date = datetime.datetime(parsed_date.year, parsed_date.month, parsed_date.day)
     true_date = datetime.datetime.now()
+    tomorrow_datetime = datetime.datetime(true_date.year, true_date.month, true_date.day + 1)
     true_date = datetime.datetime(true_date.year, true_date.month, true_date.day)
-    if parsed_date < true_date:
-        print("day has already passed")
-        raise ValueError()
+    parsed_date = datetime.datetime.strptime(date_str, format_str)
+    type_date_format = _format_type(format_str)
+    if type_date_format == 0:
+        raise ValueError("bad date format somehow")
+    if type_date_format == 1:  # only day is given
+        parsed_date_zeroed = datetime.datetime(true_date.year, true_date.month, parsed_date.day)
+        if parsed_date_zeroed < true_date:
+            parsed_date_zeroed = parsed_date_zeroed.replace(month=parsed_date_zeroed.month+1)
+        fixed_parsed_date = datetime.datetime(parsed_date_zeroed.year, parsed_date_zeroed.month, parsed_date_zeroed.day)
+    if type_date_format == 2:  # only day month is given
+        parsed_date = parsed_date.replace(year=true_date.year)
+        if parsed_date < true_date:
+            # if greater then go back one year
+            parsed_date = parsed_date.replace(year=tomorrow_datetime.year + 1)
+            fixed_parsed_date = datetime.datetime(parsed_date.year, parsed_date.month, parsed_date.day)
+        else:
+            fixed_parsed_date = datetime.datetime(parsed_date.year, parsed_date.month, parsed_date.day)
+    if type_date_format == 3:
+        fixed_parsed_date = datetime.datetime(parsed_date.year, parsed_date.month, parsed_date.day)
+
+    if fixed_parsed_date < true_date:
+       raise ValueError("in the past")
     return fixed_parsed_date
+
