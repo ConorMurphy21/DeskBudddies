@@ -60,9 +60,15 @@ class MyTestCase(unittest.TestCase):
         self.assert_date_parse_works(date, "%d")
         date = dt.datetime.today() + dt.timedelta(days=1)
         self.assert_date_parse_works(date, "%d")
+<<<<<<< HEAD
         date = dt.datetime.today() + dt.timedelta(days=6)
         self.assert_date_parse_works(date, "%d")
         date = dt.datetime.today() + dt.timedelta(days=16)
+=======
+        date = dt.date.today() + dt.timedelta(days=6)
+        self.assert_date_parse_works(date, "%d")
+        date = dt.date.today() + dt.timedelta(days=31)
+>>>>>>> origin/master
         self.assert_date_parse_works(date, "%d")
 
     def test_parse_date_day_month(self):
@@ -73,7 +79,19 @@ class MyTestCase(unittest.TestCase):
         date = dt.datetime.today() + dt.timedelta(days=364)
         self.assert_date_parse_works(date, "%d%m")
 
+<<<<<<< HEAD
     def assert_date_parse_works(self, date: dt.datetime, date_format: str):
+=======
+    def test_parse_date_normal(self):
+        valid_formats = ['%d,%m,%Y', '%d/%b %y', '%d %B %Y %H %S', '%B.%d %y', '%m/%d/%y']
+        for form in valid_formats:
+            date = dt.date.today()
+            for i in range(45):
+                self.assert_date_parse_works(date, form)
+                date = date + dt.timedelta(days=7)
+
+    def assert_date_parse_works(self, date: dt.date, date_format: str):
+>>>>>>> origin/master
         date_str = date.strftime(date_format)
         actual = util.parse_date_str(date_str, date_format).strftime("%Y%m%d")
         expected = date.strftime("%Y%m%d")
