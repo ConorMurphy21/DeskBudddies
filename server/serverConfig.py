@@ -1,4 +1,5 @@
 from cmnSys.simpleConfig import SimpleConfig
+from cmnUtils import parsers
 
 
 class ServerConfig(SimpleConfig):
@@ -6,5 +7,10 @@ class ServerConfig(SimpleConfig):
         self.data = {
             'port': 6719,
             'enableForce': False
+        }
+
+    def set_parse_funcs(self):
+        self.parsers = {
+            'enableForce': parsers.parse_bool
         }
 
